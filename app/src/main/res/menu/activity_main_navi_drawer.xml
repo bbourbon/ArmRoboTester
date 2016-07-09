@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_tests"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Tests" />
+        <item
+            android:id="@+id/nav_calibrate"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Calibrate" />
+        <item
+            android:id="@+id/nav_status"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Status" />
+        <item
+            android:id="@+id/nav_last_result"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Last result" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Settings" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_export_sdcard"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Export to SD card" />
+        </menu>
+    </item>
+
+</menu>

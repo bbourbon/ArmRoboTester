@@ -1,10 +1,8 @@
 <resources>
     <string name="app_name">ArmRoboTester</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_test_selection">TestSelectionActivity</string>
-    <string name="title_activity_arm_bluetooth">ArmBluetoothActivity</string>
-    <string name="title_activity_confirmation">ConfirmationActivity</string>
-    <string name="title_activity_timer">TimerActivity</string>
-    <string name="title_activity_running_test">RunningTestActivity</string>
-    <string name="title_activity_report">ReportActivity</string>
+    <string name="title_activity_main_navi">Testarm</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
