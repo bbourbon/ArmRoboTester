@@ -1,4 +1,4 @@
-package br.org.cesar.armrobotester.fragment;
+package br.org.cesar.armrobotester.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,8 +21,11 @@ import java.util.Set;
 
 import br.org.cesar.armrobotester.MainNaviActivity;
 import br.org.cesar.armrobotester.R;
-import br.org.cesar.armrobotester.fragment.content.TestContent.TestItem;
-import br.org.cesar.armrobotester.model.Test;
+import br.org.cesar.armrobotester.fragments.content.TestContent;
+import br.org.cesar.armrobotester.fragments.content.TestContent.MotionTestItem;
+import br.org.cesar.armrobotester.model.MotionTest;
+
+
 
 /**
  * A fragment representing a list of Items.
@@ -30,10 +33,12 @@ import br.org.cesar.armrobotester.model.Test;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class TestsFragment extends Fragment implements View.OnClickListener {
+public class TestsFragment extends Fragment implements View.OnClickListener,
+        TestsRecyclerViewAdapter.OnTestAdapterListener {
 
+    RecyclerView.AdapterDataObserver mObserver;
     private OnListFragmentInteractionListener mListener;
-    private ArrayList<TestItem> mListTestItems;
+    private ArrayList<TestContent.MotionTestItem> mListTestItems;
     private Handler mHandler;
     private AlertDialog mTestListAlertDialog;
     private TestsRecyclerViewAdapter mTestRecyclerViewAdapter;
@@ -43,8 +48,9 @@ public class TestsFragment extends Fragment implements View.OnClickListener {
      * fragment (e.g. upon screen orientation changes).
      */
     public TestsFragment() {
-        mListTestItems = new ArrayList<TestItem>();
+        mListTestItems = new ArrayList<>();
         mHandler = new Handler();
+
     }
 
     @Override
@@ -63,7 +69,7 @@ public class TestsFragment extends Fragment implements View.OnClickListener {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             mTestRecyclerViewAdapter =
-                    new TestsRecyclerViewAdapter(mListTestItems, mListener);
+                    new TestsRecyclerViewAdapter(mListTestItems, this);
             recyclerView.setAdapter(mTestRecyclerViewAdapter);
         }
         return view;
@@ -93,6 +99,11 @@ public class TestsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    public void removeMotionTestItem(MotionTestItem item) {
+        if (null != item) {
+            mTestRecyclerViewAdapter.removeItem(item);
+        }
+    }
 
     private void onAddTest() {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this.getActivity());
@@ -108,8 +119,8 @@ public class TestsFragment extends Fragment implements View.OnClickListener {
                             Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
                             if (checkedItem != null
                                     && mTestRecyclerViewAdapter != null
-                                    && checkedItem instanceof TestItem) {
-                                TestItem selectItem = (TestItem) checkedItem;
+                                    && checkedItem instanceof TestContent.MotionTestItem) {
+                                TestContent.MotionTestItem selectItem = (TestContent.MotionTestItem) checkedItem;
                                 Log.d(MainNaviActivity.TAG, "selected: " + selectItem.toString());
                                 mTestRecyclerViewAdapter.addItem(selectItem);
                             }
@@ -123,23 +134,75 @@ public class TestsFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private ArrayAdapter<TestItem> getTestsItemType() {
-        ArrayAdapter<TestItem> arrayAdapter = new ArrayAdapter<>(this.getActivity(),
+    private ArrayAdapter<MotionTestItem> getTestsItemType() {
+        ArrayAdapter<TestContent.MotionTestItem> arrayAdapter = new ArrayAdapter<>(this.getActivity(),
                 android.R.layout.simple_list_item_1);
         arrayAdapter.setNotifyOnChange(true);
 
-        Set<Integer> typeIds = Test.validKeys();
+        Set<Integer> typeIds = MotionTest.validKeys();
 
         if (typeIds != null) {
             for (Integer type : typeIds) {
-                arrayAdapter.add(new TestItem(type));
+                arrayAdapter.add(new TestContent.MotionTestItem(type));
             }
         }
 
-        arrayAdapter.sort(Test.getComparator());
+        arrayAdapter.sort(MotionTest.getComparator());
         return arrayAdapter;
     }
 
+    @Override
+    public void onListFragmentInteraction(MotionTestItem item) {
+        if (null != mListener)
+            mListener.onListFragmentInteraction(item);
+    }
+
+    @Override
+    public void onLongClick(MotionTestItem item) {
+        if (null != mListener) mListener.onLongClick(item);
+        if (null != mTestRecyclerViewAdapter)
+            mTestRecyclerViewAdapter.removeItem(item);
+    }
+
+    @Override
+    public void onClick(MotionTestItem item) {
+        if (null != mListener) mListener.onClick(item);
+
+        if (null != mTestRecyclerViewAdapter) {
+            switch (item.status) {
+                case MotionTestItem.Status.NONE:
+                    item.status = MotionTestItem.Status.RUNNING;
+                    break;
+                case MotionTestItem.Status.RUNNING:
+                    item.status = MotionTestItem.Status.PAUSE;
+                    break;
+                case MotionTestItem.Status.PAUSE:
+                    item.status = MotionTestItem.Status.COMPLETED;
+                    break;
+                case MotionTestItem.Status.COMPLETED:
+                    item.status = MotionTestItem.Status.CANCELLED;
+                    break;
+                case MotionTestItem.Status.CANCELLED:
+                    item.status = MotionTestItem.Status.NONE;
+                    break;
+                default:
+                    Log.e(MainNaviActivity.TAG, "Unknown Test Status");
+                    break;
+            }
+        }
+
+        if (null != mTestRecyclerViewAdapter)
+            mTestRecyclerViewAdapter.updateItem(-1, item);
+    }
+
+    @Override
+    public void onListFragmentItemCountChanged(int count) {
+        if (null != mListener)
+            mListener.onListFragmentItemCountChanged(count);
+    }
+
+
+    // TODO: Change return type to boolean, to check if handled on above layer
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -151,6 +214,13 @@ public class TestsFragment extends Fragment implements View.OnClickListener {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(TestItem item);
+        void onListFragmentInteraction(MotionTestItem item);
+
+        void onLongClick(MotionTestItem item);
+
+        void onClick(MotionTestItem item);
+
+        void onListFragmentItemCountChanged(int count);
     }
+
 }

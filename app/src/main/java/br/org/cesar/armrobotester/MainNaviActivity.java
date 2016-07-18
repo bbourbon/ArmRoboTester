@@ -15,15 +15,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import br.org.cesar.armrobotester.fragment.TestsFragment;
-import br.org.cesar.armrobotester.fragment.content.TestContent;
+import br.org.cesar.armrobotester.fragments.TestsFragment;
+import br.org.cesar.armrobotester.fragments.content.TestContent;
 
 public class MainNaviActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         TestsFragment.OnListFragmentInteractionListener {
 
     public static final String TAG = "BRACO";
-    FloatingActionButton mFab;
+    FloatingActionButton mFabOptions;
+    FloatingActionButton mFabPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +33,22 @@ public class MainNaviActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
-        if (mFab != null) {
-            mFab.setVisibility(FloatingActionButton.GONE);
-            mFab.setOnClickListener(new View.OnClickListener() {
+        mFabPlay = (FloatingActionButton) findViewById(R.id.fab_play);
+        if (mFabPlay != null) {
+            mFabPlay.setVisibility(FloatingActionButton.GONE);
+            mFabPlay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own play action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+        }
+
+        mFabOptions = (FloatingActionButton) findViewById(R.id.fab_options);
+        if (mFabOptions != null) {
+            mFabOptions.setVisibility(FloatingActionButton.GONE);
+            mFabOptions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -126,9 +139,9 @@ public class MainNaviActivity extends AppCompatActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.relative_for_fragments, testsFragment).commit();
 
-        mFab.setImageResource(android.R.drawable.ic_menu_add);
-        mFab.setOnClickListener(testsFragment);
-        mFab.setVisibility(FloatingActionButton.VISIBLE);
+        mFabOptions.setImageResource(R.drawable.ic_menu_plus);
+        mFabOptions.setOnClickListener(testsFragment);
+        mFabOptions.setVisibility(FloatingActionButton.VISIBLE);
     }
 
     private void onCalibrate() {
@@ -156,7 +169,25 @@ public class MainNaviActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(TestContent.TestItem item) {
+    public void onListFragmentInteraction(TestContent.MotionTestItem item) {
 
+    }
+
+    @Override
+    public void onLongClick(TestContent.MotionTestItem item) {
+        // TODO: Remove item
+    }
+
+    @Override
+    public void onClick(TestContent.MotionTestItem item) {
+        // TODO: Change Status
+    }
+
+    @Override
+    public void onListFragmentItemCountChanged(int count) {
+        if (mFabPlay != null) {
+            mFabPlay.setVisibility(count > 0 ? FloatingActionButton.VISIBLE :
+                    FloatingActionButton.GONE);
+        }
     }
 }

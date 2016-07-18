@@ -1,17 +1,19 @@
 package br.org.cesar.armrobotester.model;
 
+import android.support.annotation.NonNull;
+
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import br.org.cesar.armrobotester.fragment.content.TestContent;
+import br.org.cesar.armrobotester.fragments.content.TestContent;
 
 /**
  * Created by bcb on 03/07/16.
  */
-public class Test {
+public class MotionTest {
 
     // Pre-configured motion
     public static final int MOTION_A = 1000;
@@ -91,25 +93,27 @@ public class Test {
     private int mType;
 
 
-    public Test(int type) {
+    public MotionTest(int type) {
         if (!isValid(type)) {
             throw new IllegalArgumentException();
         }
         mType = type;
     }
 
+    @NonNull
     public static Collection<String> validTypes() {
         return sMapTypes.values();
     }
 
+    @NonNull
     public static Set<Integer> validKeys() {
         return sMapTypes.keySet();
     }
 
-    public static Comparator<? super TestContent.TestItem> getComparator() {
-        Comparator<Test> testComparator = new Comparator<Test>() {
+    public static Comparator<? super TestContent.MotionTestItem> getComparator() {
+        Comparator<MotionTest> testComparator = new Comparator<MotionTest>() {
             @Override
-            public int compare(Test lhs, Test rhs) {
+            public int compare(MotionTest lhs, MotionTest rhs) {
                 if (lhs != null && rhs != null) {
                     return (lhs.mType - rhs.mType);
                 }
