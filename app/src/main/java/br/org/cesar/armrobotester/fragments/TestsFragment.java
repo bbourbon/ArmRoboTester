@@ -99,12 +99,6 @@ public class TestsFragment extends Fragment implements View.OnClickListener,
         }
     }
 
-    public void removeMotionTestItem(MotionTestItem item) {
-        if (null != item) {
-            mTestRecyclerViewAdapter.removeItem(item);
-        }
-    }
-
     private void onAddTest() {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this.getActivity());
 

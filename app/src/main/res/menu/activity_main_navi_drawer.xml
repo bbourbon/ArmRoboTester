@@ -4,23 +4,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_tests"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_menu_test"
             android:title="Tests" />
         <item
             android:id="@+id/nav_calibrate"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_menu_calibrate"
             android:title="Calibrate" />
         <item
             android:id="@+id/nav_status"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_info"
             android:title="Status" />
         <item
             android:id="@+id/nav_last_result"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_menu_report"
             android:title="Last result" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_menu_settings"
             android:title="Settings" />
     </group>
 
