@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:entries="@array/list_empty"
+        android:entryValues="@array/list_values_empty"
+        android:key="bt_device"
+        android:title="Paired Test Robotic Arm" />
+    <EditTextPreference
+        android:defaultValue="70"
+        android:inputType="number"
+        android:key="max_temp"
+        android:summary="Maximum Motor Temperature"
+        android:title="Max Temperature" />
+    <EditTextPreference
+        android:defaultValue="10"
+        android:inputType="number"
+        android:key="interval_time"
+        android:summary="interval between tests (in seconds)"
+        android:title="Interval between test" />
+</PreferenceScreen>

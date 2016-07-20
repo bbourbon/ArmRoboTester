@@ -21,8 +21,8 @@ import java.util.Set;
 
 import br.org.cesar.armrobotester.MainNaviActivity;
 import br.org.cesar.armrobotester.R;
-import br.org.cesar.armrobotester.fragments.content.TestContent;
-import br.org.cesar.armrobotester.fragments.content.TestContent.MotionTestItem;
+import br.org.cesar.armrobotester.content.TestContent;
+import br.org.cesar.armrobotester.content.TestContent.MotionTestItem;
 import br.org.cesar.armrobotester.model.MotionTest;
 
 

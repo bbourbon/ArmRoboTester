@@ -9,8 +9,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import br.org.cesar.armrobotester.R;
+import br.org.cesar.armrobotester.content.TestContent;
 import br.org.cesar.armrobotester.fragments.TestsFragment.OnListFragmentInteractionListener;
-import br.org.cesar.armrobotester.fragments.content.TestContent;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link TestContent.MotionTestItem} and makes a call to the

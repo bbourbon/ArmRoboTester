@@ -1,4 +1,4 @@
-package br.org.cesar.armrobotester.fragments.content;
+package br.org.cesar.armrobotester.content;
 
 import br.org.cesar.armrobotester.model.MotionTest;
 

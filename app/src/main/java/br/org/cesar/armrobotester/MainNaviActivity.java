@@ -1,6 +1,8 @@
 package br.org.cesar.armrobotester;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -10,21 +12,24 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import br.org.cesar.armrobotester.content.TestContent;
+import br.org.cesar.armrobotester.fragments.TestArmPreferenceFragment;
 import br.org.cesar.armrobotester.fragments.TestsFragment;
-import br.org.cesar.armrobotester.fragments.content.TestContent;
 
 public class MainNaviActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        TestsFragment.OnListFragmentInteractionListener {
+        TestsFragment.OnListFragmentInteractionListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String TAG = "BRACO";
     FloatingActionButton mFabOptions;
     FloatingActionButton mFabPlay;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,7 @@ public class MainNaviActivity extends AppCompatActivity
             mFabPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own play action", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "Starting Tests...", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
             });
@@ -51,7 +56,7 @@ public class MainNaviActivity extends AppCompatActivity
             mFabOptions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "Add new test", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
             });
@@ -68,6 +73,24 @@ public class MainNaviActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(this);
+        }
+
+        this.mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (null != mSharedPreferences) {
+            mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (null != mSharedPreferences) {
+            mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
         }
     }
 
@@ -157,7 +180,11 @@ public class MainNaviActivity extends AppCompatActivity
     }
 
     private void onSettings() {
-        Toast.makeText(this, "Open Settings", Toast.LENGTH_SHORT).show();
+        final TestArmPreferenceFragment testArmPreferenceFragment = new TestArmPreferenceFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.relative_for_fragments, testArmPreferenceFragment).commit();
+        //Toast.makeText(this, "Open Settings", Toast.LENGTH_SHORT).show();
     }
 
     private void onShare() {
@@ -188,6 +215,16 @@ public class MainNaviActivity extends AppCompatActivity
         if (mFabPlay != null) {
             mFabPlay.setVisibility(count > 0 ? FloatingActionButton.VISIBLE :
                     FloatingActionButton.GONE);
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (null != sharedPreferences && !TextUtils.isEmpty(key)) {
+            if (key.equals("bt_device")) {
+                Toast.makeText(this, sharedPreferences.getString("bt_device", "invalid"),
+                        Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

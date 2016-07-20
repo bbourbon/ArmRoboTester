@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import br.org.cesar.armrobotester.fragments.content.TestContent;
+import br.org.cesar.armrobotester.content.TestContent;
 
 /**
  * Created by bcb on 03/07/16.
