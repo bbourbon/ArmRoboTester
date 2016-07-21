@@ -20,6 +20,17 @@ public class ArmSensor {
         mTorque = torque;
     }
 
+    @Override
+    public String toString() {
+        String s = "ID: " + mId;
+        s += ", Speed: " + mSpeed;
+        s += ", Temp: " + mTemperature;
+        s += ", Pos: " + mPosition;
+        s += ", Torque: " + mTorque;
+
+        return s;
+    }
+
     public int getSpeed() {
         return mSpeed;
     }

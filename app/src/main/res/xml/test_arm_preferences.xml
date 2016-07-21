@@ -17,4 +17,9 @@
         android:key="interval_time"
         android:summary="interval between tests (in seconds)"
         android:title="Interval between test" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="auto_refresh_status"
+        android:summary="Refresh status every 5 seconds"
+        android:title="Auto Refresh Status" />
 </PreferenceScreen>

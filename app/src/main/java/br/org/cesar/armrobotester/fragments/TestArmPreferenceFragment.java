@@ -1,9 +1,15 @@
 package br.org.cesar.armrobotester.fragments;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 import br.org.cesar.armrobotester.R;
 
@@ -35,14 +41,30 @@ public class TestArmPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void setDeviceList(ListPreference listPreference) {
-        // TODO: Get Bluetooth Paired Device
+        Context context = this.getContext();
 
-        // TODO: if empty list launch Bluetooth Settings
+        if (null != context) {
+            ArrayList<CharSequence> names = new ArrayList<>();
+            ArrayList<CharSequence> address = new ArrayList<>();
 
-        CharSequence[] entries = {"Device-1", "Device-2"};
-        CharSequence[] entryValues = {"00:11:22:33:44:55", "FF:EE:DD:CC:BB:AA"};
-        listPreference.setEntries(entries);
-        listPreference.setEntryValues(entryValues);
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (null != bluetoothAdapter) {
+                Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+
+                for (BluetoothDevice device : pairedDevices) {
+                    names.add(device.getName());
+                    address.add(device.getAddress());
+                }
+            }
+
+            if (names.size() == address.size() && names.size() > 0) {
+                CharSequence[] entries = names.toArray(new CharSequence[names.size()]);
+                CharSequence[] entryValues =
+                        address.toArray(new CharSequence[address.size()]);
+                listPreference.setEntries(entries);
+                listPreference.setEntryValues(entryValues);
+            }
+        }
     }
 
     @Override

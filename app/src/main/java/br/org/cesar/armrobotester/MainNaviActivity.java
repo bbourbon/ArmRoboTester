@@ -1,5 +1,7 @@
 package br.org.cesar.armrobotester;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -13,12 +15,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Set;
+
 import br.org.cesar.armrobotester.content.TestContent;
+import br.org.cesar.armrobotester.fragments.StatusFragment;
 import br.org.cesar.armrobotester.fragments.TestArmPreferenceFragment;
 import br.org.cesar.armrobotester.fragments.TestsFragment;
 
@@ -29,6 +36,8 @@ public class MainNaviActivity extends AppCompatActivity
     public static final String TAG = "BRACO";
     FloatingActionButton mFabOptions;
     FloatingActionButton mFabPlay;
+    TextView mTextDeviceName;
+    TextView mTextDeviceAddress;
     private SharedPreferences mSharedPreferences;
 
     @Override
@@ -73,7 +82,12 @@ public class MainNaviActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(this);
+            View headerView = navigationView.getHeaderView(0);
+            mTextDeviceName = (TextView) headerView.findViewById(R.id.text_bt_device_name);
+            mTextDeviceAddress = (TextView) headerView.findViewById(R.id.text_bt_device_address);
+
         }
+
 
         this.mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
@@ -84,6 +98,7 @@ public class MainNaviActivity extends AppCompatActivity
         if (null != mSharedPreferences) {
             mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
         }
+        loadLastPairedDevice();
     }
 
     @Override
@@ -162,7 +177,7 @@ public class MainNaviActivity extends AppCompatActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.relative_for_fragments, testsFragment).commit();
 
-        mFabOptions.setImageResource(R.drawable.ic_menu_plus);
+        mFabOptions.setImageResource(R.drawable.ic_float_plus);
         mFabOptions.setOnClickListener(testsFragment);
         mFabOptions.setVisibility(FloatingActionButton.VISIBLE);
     }
@@ -172,7 +187,16 @@ public class MainNaviActivity extends AppCompatActivity
     }
 
     private void onStatus() {
-        Toast.makeText(this, "Status", Toast.LENGTH_SHORT).show();
+        final StatusFragment statusFragment = new StatusFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.relative_for_fragments, statusFragment).commit();
+
+        mFabOptions.setImageResource(R.drawable.ic_float_refresh);
+        mFabOptions.setOnClickListener(statusFragment);
+        mFabOptions.setVisibility(FloatingActionButton.VISIBLE);
+
+        //Toast.makeText(this, "Status", Toast.LENGTH_SHORT).show();
     }
 
     private void onLastResult() {
@@ -193,6 +217,33 @@ public class MainNaviActivity extends AppCompatActivity
 
     private void onExportResults() {
         Toast.makeText(this, "Exporting...", Toast.LENGTH_SHORT).show();
+    }
+
+    private void loadLastPairedDevice() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        String deviceMacAddress = mSharedPreferences.getString("bt_device", null);
+        String deviceName = null;
+        if (null != bluetoothAdapter && !TextUtils.isEmpty(deviceMacAddress)) {
+            Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+            for (BluetoothDevice device : pairedDevices) {
+                if (deviceMacAddress.equals(device.getAddress())) {
+                    deviceName = device.getName();
+                }
+            }
+        }
+
+        if (TextUtils.isEmpty(deviceName) && !TextUtils.isEmpty(deviceMacAddress)) {
+            deviceName = deviceMacAddress;
+        }
+
+        if (!TextUtils.isEmpty(deviceName) && !TextUtils.isEmpty(deviceMacAddress)) {
+            if (null != mTextDeviceName)
+                mTextDeviceName.setText("Device: " + deviceName);
+            if (null != mTextDeviceAddress)
+                mTextDeviceAddress.setText("Address: " + deviceMacAddress);
+        }
+
+        Log.d(TAG, "Dev: " + deviceName + ", MAC: " + deviceMacAddress);
     }
 
     @Override
@@ -222,6 +273,7 @@ public class MainNaviActivity extends AppCompatActivity
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (null != sharedPreferences && !TextUtils.isEmpty(key)) {
             if (key.equals("bt_device")) {
+                loadLastPairedDevice();
                 Toast.makeText(this, sharedPreferences.getString("bt_device", "invalid"),
                         Toast.LENGTH_LONG).show();
             }

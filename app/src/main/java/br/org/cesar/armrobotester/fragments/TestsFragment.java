@@ -36,7 +36,6 @@ import br.org.cesar.armrobotester.model.MotionTest;
 public class TestsFragment extends Fragment implements View.OnClickListener,
         TestsRecyclerViewAdapter.OnTestAdapterListener {
 
-    RecyclerView.AdapterDataObserver mObserver;
     private OnListFragmentInteractionListener mListener;
     private ArrayList<TestContent.MotionTestItem> mListTestItems;
     private Handler mHandler;

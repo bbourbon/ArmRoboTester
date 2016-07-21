@@ -106,6 +106,9 @@ public class TestsRecyclerViewAdapter extends RecyclerView.Adapter<TestsRecycler
         void onListFragmentItemCountChanged(int count);
     }
 
+    /**
+     * View Holder
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mTestDescription;

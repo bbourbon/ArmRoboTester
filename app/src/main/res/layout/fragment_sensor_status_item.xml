@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/image_sensor"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:contentDescription="@string/arm_sensor_motor_icon_description"
+        android:padding="5dp"
+        android:src="@drawable/ic_item_engine" />
+
+    <!-- ID -->
+    <TextView
+        android:id="@+id/text_sensor_id"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/image_sensor"
+        android:minWidth="50dp"
+        android:padding="3dp"
+        android:text="ID: 1" />
+
+    <!-- Position -->
+    <TextView
+        android:id="@+id/text_sensor_pos"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_below="@+id/image_sensor"
+        android:layout_toEndOf="@id/text_sensor_id"
+        android:minWidth="50dp"
+        android:padding="3dp"
+        android:text="Position: 1054" />
+
+    <!-- Speed -->
+    <TextView
+        android:id="@+id/text_sensor_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/text_sensor_temp"
+        android:minWidth="50dp"
+        android:padding="3dp"
+        android:text="Speed: 15000 RPM" />
+
+    <!-- Temperature -->
+    <TextView
+        android:id="@+id/text_sensor_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_above="@+id/view_line"
+        android:layout_alignParentEnd="true"
+        android:minWidth="50dp"
+        android:padding="3dp"
+        android:text="Temperature: 100 ˚C" />
+
+    <!-- Torque -->
+    <TextView
+        android:id="@+id/text_sensor_torque"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/text_sensor_id"
+        android:minWidth="50dp"
+        android:padding="3dp"
+        android:text="Torque: 40N" />
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/text_sensor_pos"
+        android:background="#CCC"
+        android:paddingTop="5dp" />
+
+</RelativeLayout>
