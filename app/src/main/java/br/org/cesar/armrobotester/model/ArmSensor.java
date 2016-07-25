@@ -12,12 +12,16 @@ public class ArmSensor {
     int mTorque;
     int mId;
 
+    float values[];
+
     public ArmSensor(int id, int speed, int temperature, int pos, int torque) {
         mId = id;
         mSpeed = speed;
         mTemperature = temperature;
         mPosition = pos;
         mTorque = torque;
+
+        values = new float[4];
     }
 
     @Override
