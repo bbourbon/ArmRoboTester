@@ -227,7 +227,6 @@ public class SensorActivityFragment extends Fragment implements SensorEventListe
 
     }
 
-
     public void record() {
         this.mRecordData = true;
         initReportFile();
