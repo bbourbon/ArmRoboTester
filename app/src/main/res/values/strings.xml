@@ -10,4 +10,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="arm_sensor_motor_icon_description">Arm Sensor Motor icon</string>
     <string name="title_activity_sensor">Arm Sensors</string>
+    <string name="test_case_label_name">Name:</string>
+    <string name="test_case_name_hint">Test case name - TC###</string>
+    <string name="test_case_label_id">ID:</string>
+    <string name="test_case_id_hint">###</string>
+    <string name="test_case_label_motion">Motion:</string>
+    <string name="add_button">Add</string>
+    <string name="cancel_button">Cancel</string>
 </resources>

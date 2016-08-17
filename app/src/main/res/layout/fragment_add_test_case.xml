@@ -1,0 +1,99 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.org.cesar.armrobotester.fragments.AddTestCaseFragment">
+
+    <!-- Test Case Name -->
+    <TextView
+        android:id="@+id/label_test_case_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="@string/test_case_label_name" />
+
+    <EditText
+        android:id="@+id/edit_test_case_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_test_case_name"
+        android:hint="@string/test_case_name_hint" />
+
+    <!-- Test Case ID -->
+    <TextView
+        android:id="@+id/label_test_case_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_test_case_name"
+        android:text="@string/test_case_label_id" />
+
+    <EditText
+        android:id="@+id/edit_test_case_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_test_case_id"
+        android:hint="@string/test_case_id_hint"
+        android:inputType="number" />
+
+    <!-- First Motion [Mandatory] -->
+    <TextView
+        android:id="@+id/label_test_case_motion1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_test_case_id"
+        android:text="@string/test_case_label_motion" />
+
+    <Spinner
+        android:id="@+id/spinner_test_case_motion_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_test_case_motion1" />
+
+    <!-- Second Motion [Optional]-->
+    <TextView
+        android:id="@+id/label_test_case_motion2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_test_case_motion_1"
+        android:text="@string/test_case_label_motion" />
+
+    <Spinner
+        android:id="@+id/spinner_test_case_motion_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_test_case_motion2" />
+
+    <!-- Third Motion [Optional]-->
+    <TextView
+        android:id="@+id/label_test_case_motion3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_test_case_motion_2"
+        android:text="@string/test_case_label_motion" />
+
+    <Spinner
+        android:id="@+id/spinner_test_case_motion_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_test_case_motion3" />
+
+    <!-- Add & Notify & Clean -->
+    <Button
+        android:id="@+id/button_test_case_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/add_button" />
+
+    <!-- Cancel / Discard & Back -->
+    <Button
+        android:id="@+id/button_test_case_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/cancel_button"
+        tools:ignore="RelativeOverlap" />
+
+</RelativeLayout>

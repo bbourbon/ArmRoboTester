@@ -16,9 +16,9 @@ import br.org.cesar.armrobotester.R;
 /**
  * Created by bcb on 19/07/16.
  */
-public class TestArmPreferenceFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragmentCompat {
 
-    public TestArmPreferenceFragment() {
+    public SettingsFragment() {
 
     }
 

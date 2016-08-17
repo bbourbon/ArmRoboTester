@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,15 +26,27 @@ import android.widget.Toast;
 import java.util.Set;
 
 import br.org.cesar.armrobotester.content.TestContent;
+import br.org.cesar.armrobotester.fragments.AddTestCaseFragment;
+import br.org.cesar.armrobotester.fragments.SettingsFragment;
 import br.org.cesar.armrobotester.fragments.StatusFragment;
-import br.org.cesar.armrobotester.fragments.TestArmPreferenceFragment;
-import br.org.cesar.armrobotester.fragments.TestsFragment;
+import br.org.cesar.armrobotester.fragments.TestSuiteFragment;
 
 public class MainNaviActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        TestsFragment.OnListFragmentInteractionListener, SharedPreferences.OnSharedPreferenceChangeListener {
+        TestSuiteFragment.OnListFragmentInteractionListener,
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        FragmentManager.OnBackStackChangedListener {
 
     public static final String TAG = "BRACO";
+    private static final String ADD_TESTCASE_TAG = "add_testcase_tag";
+
+    private static final String TAG_TEST_FRAG = "tag_test_fragment";
+    private static final String TAG_CALIBRATE_FRAG = "tag_calibrate_fragment";
+    private static final String TAG_STATUS_FRAG = "tag_status_fragment";
+    private static final String TAG_RESULT_FRAG = "tag_result_fragment";
+    private static final String TAG_SETTINGS_FRAG = "tag_settings_fragment";
+
+
     FloatingActionButton mFabOptions;
     FloatingActionButton mFabPlay;
     TextView mTextDeviceName;
@@ -88,7 +101,7 @@ public class MainNaviActivity extends AppCompatActivity
 
         }
 
-
+        this.getSupportFragmentManager().addOnBackStackChangedListener(this);
         this.mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
@@ -172,14 +185,31 @@ public class MainNaviActivity extends AppCompatActivity
     }
 
     private void onTests() {
-        final TestsFragment testsFragment = new TestsFragment();
+        final TestSuiteFragment testSuiteFragment = new TestSuiteFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.relative_for_fragments, testsFragment).commit();
+                .replace(R.id.relative_for_fragments, testSuiteFragment, TAG_TEST_FRAG).commit();
 
         mFabOptions.setImageResource(R.drawable.ic_float_plus);
-        mFabOptions.setOnClickListener(testsFragment);
+        //mFabOptions.setOnClickListener(testSuiteFragment);
+        mFabOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onAddTests();
+            }
+        });
         mFabOptions.setVisibility(FloatingActionButton.VISIBLE);
+    }
+
+    private void onAddTests() {
+        mFabOptions.setVisibility(FloatingActionButton.GONE);
+
+        final AddTestCaseFragment addTestCaseFragment = new AddTestCaseFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.relative_for_fragments, addTestCaseFragment)
+                .addToBackStack(ADD_TESTCASE_TAG)
+                .commit();
     }
 
     private void onCalibrate() {
@@ -190,7 +220,7 @@ public class MainNaviActivity extends AppCompatActivity
         final StatusFragment statusFragment = new StatusFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.relative_for_fragments, statusFragment).commit();
+                .replace(R.id.relative_for_fragments, statusFragment, TAG_STATUS_FRAG).commit();
 
         mFabOptions.setImageResource(R.drawable.ic_float_refresh);
         mFabOptions.setOnClickListener(statusFragment);
@@ -204,11 +234,12 @@ public class MainNaviActivity extends AppCompatActivity
     }
 
     private void onSettings() {
-        final TestArmPreferenceFragment testArmPreferenceFragment = new TestArmPreferenceFragment();
+        mFabOptions.setVisibility(FloatingActionButton.GONE);
+        final SettingsFragment testArmSettingsFragment = new SettingsFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.relative_for_fragments, testArmPreferenceFragment).commit();
-        //Toast.makeText(this, "Open Settings", Toast.LENGTH_SHORT).show();
+                .replace(R.id.relative_for_fragments, testArmSettingsFragment,
+                        TAG_SETTINGS_FRAG).commit();
     }
 
     private void onShare() {
@@ -247,17 +278,17 @@ public class MainNaviActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(TestContent.MotionTestItem item) {
+    public void onListFragmentInteraction(TestContent.MotionItem item) {
 
     }
 
     @Override
-    public void onLongClick(TestContent.MotionTestItem item) {
+    public void onLongClick(TestContent.MotionItem item) {
         // TODO: Remove item
     }
 
     @Override
-    public void onClick(TestContent.MotionTestItem item) {
+    public void onClick(TestContent.MotionItem item) {
         // TODO: Change Status
     }
 
@@ -277,6 +308,15 @@ public class MainNaviActivity extends AppCompatActivity
                 Toast.makeText(this, sharedPreferences.getString("bt_device", "invalid"),
                         Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment testFragment = fragmentManager.findFragmentByTag(TAG_TEST_FRAG);
+        if (testFragment != null && testFragment.isVisible()) {
+            mFabOptions.setVisibility(FloatingActionButton.VISIBLE);
         }
     }
 }

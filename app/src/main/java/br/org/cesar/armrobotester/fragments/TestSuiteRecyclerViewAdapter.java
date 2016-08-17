@@ -10,20 +10,20 @@ import java.util.ArrayList;
 
 import br.org.cesar.armrobotester.R;
 import br.org.cesar.armrobotester.content.TestContent;
-import br.org.cesar.armrobotester.fragments.TestsFragment.OnListFragmentInteractionListener;
+import br.org.cesar.armrobotester.fragments.TestSuiteFragment.OnListFragmentInteractionListener;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link TestContent.MotionTestItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link TestContent.MotionItem} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class TestsRecyclerViewAdapter extends RecyclerView.Adapter<TestsRecyclerViewAdapter.ViewHolder> {
+public class TestSuiteRecyclerViewAdapter extends RecyclerView.Adapter<TestSuiteRecyclerViewAdapter.ViewHolder> {
 
-    private final ArrayList<TestContent.MotionTestItem> mValues;
-    private final TestsRecyclerViewAdapter.OnTestAdapterListener mListener;
+    private final ArrayList<TestContent.MotionItem> mValues;
+    private final TestSuiteRecyclerViewAdapter.OnTestAdapterListener mListener;
 
-    public TestsRecyclerViewAdapter(ArrayList<TestContent.MotionTestItem> items,
-                                    TestsRecyclerViewAdapter.OnTestAdapterListener listener) {
+    public TestSuiteRecyclerViewAdapter(ArrayList<TestContent.MotionItem> items,
+                                        TestSuiteRecyclerViewAdapter.OnTestAdapterListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -69,7 +69,7 @@ public class TestsRecyclerViewAdapter extends RecyclerView.Adapter<TestsRecycler
         return mValues.size();
     }
 
-    public void addItem(TestContent.MotionTestItem testItem) {
+    public void addItem(TestContent.MotionItem testItem) {
         if (testItem != null) {
             mValues.add(testItem);
             if (null != mListener) mListener.onListFragmentItemCountChanged(mValues.size());
@@ -77,7 +77,7 @@ public class TestsRecyclerViewAdapter extends RecyclerView.Adapter<TestsRecycler
         }
     }
 
-    public void removeItem(TestContent.MotionTestItem testItem) {
+    public void removeItem(TestContent.MotionItem testItem) {
         if (testItem != null) {
             mValues.remove(testItem);
             if (null != mListener) mListener.onListFragmentItemCountChanged(mValues.size());
@@ -85,7 +85,7 @@ public class TestsRecyclerViewAdapter extends RecyclerView.Adapter<TestsRecycler
         }
     }
 
-    public void updateItem(int position, TestContent.MotionTestItem testItem) {
+    public void updateItem(int position, TestContent.MotionItem testItem) {
         if (null == testItem) return;
         if (position >= 0 && position < mValues.size()) {
             mValues.set(position, testItem);
@@ -97,11 +97,11 @@ public class TestsRecyclerViewAdapter extends RecyclerView.Adapter<TestsRecycler
     }
 
     public interface OnTestAdapterListener {
-        void onListFragmentInteraction(TestContent.MotionTestItem item);
+        void onListFragmentInteraction(TestContent.MotionItem item);
 
-        void onLongClick(TestContent.MotionTestItem item);
+        void onLongClick(TestContent.MotionItem item);
 
-        void onClick(TestContent.MotionTestItem item);
+        void onClick(TestContent.MotionItem item);
 
         void onListFragmentItemCountChanged(int count);
     }
@@ -113,7 +113,7 @@ public class TestsRecyclerViewAdapter extends RecyclerView.Adapter<TestsRecycler
         public final View mView;
         public final TextView mTestDescription;
         public final TextView mTestStatus;
-        public TestContent.MotionTestItem mItem;
+        public TestContent.MotionItem mItem;
 
         public ViewHolder(View view) {
             super(view);

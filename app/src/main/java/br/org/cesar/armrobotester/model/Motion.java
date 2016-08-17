@@ -13,7 +13,7 @@ import br.org.cesar.armrobotester.content.TestContent;
 /**
  * Created by bcb on 03/07/16.
  */
-public class MotionTest {
+public class Motion {
 
     // Pre-configured motion
     public static final int MOTION_A = 1000;
@@ -54,6 +54,9 @@ public class MotionTest {
     public static final int ROTATION_345 = 345;
 
     public static final int ROTATION_360 = 360;
+
+    public static final int INVALID = -1;
+
     private static final Map<Integer, String> sMapTypes;
 
     static {
@@ -88,12 +91,14 @@ public class MotionTest {
         sMapTypes.put(MOTION_B, "Motion B");
         sMapTypes.put(MOTION_C, "Motion C");
         sMapTypes.put(MOTION_D, "Motion D");
+
+        sMapTypes.put(INVALID, "");
     }
 
     private int mType;
 
 
-    public MotionTest(int type) {
+    public Motion(int type) {
         if (!isValid(type)) {
             throw new IllegalArgumentException();
         }
@@ -110,10 +115,10 @@ public class MotionTest {
         return sMapTypes.keySet();
     }
 
-    public static Comparator<? super TestContent.MotionTestItem> getComparator() {
-        Comparator<MotionTest> testComparator = new Comparator<MotionTest>() {
+    public static Comparator<? super TestContent.MotionItem> getComparator() {
+        Comparator<Motion> testComparator = new Comparator<Motion>() {
             @Override
-            public int compare(MotionTest lhs, MotionTest rhs) {
+            public int compare(Motion lhs, Motion rhs) {
                 if (lhs != null && rhs != null) {
                     return (lhs.mType - rhs.mType);
                 }

@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Empty Lists -->
     <string-array name="list_empty">
         <item>Empty</item>
     </string-array>
     <string-array name="list_values_empty">
         <item>0</item>
     </string-array>
+
+    <!-- Tests List-->
+    <string-array name="list_test">
+        <item></item>
+        <item>Rotation</item>
+        <item>Motion</item>
+    </string-array>
+    <string-array name="list_values_tests">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>

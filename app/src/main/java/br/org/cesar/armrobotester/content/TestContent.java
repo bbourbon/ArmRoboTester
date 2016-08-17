@@ -1,6 +1,6 @@
 package br.org.cesar.armrobotester.content;
 
-import br.org.cesar.armrobotester.model.MotionTest;
+import br.org.cesar.armrobotester.model.Motion;
 
 /**
  * Helper class for providing sample content for user interfaces created by
@@ -13,17 +13,17 @@ public class TestContent {
     /**
      * A test item representing a piece of content.
      */
-    public static class MotionTestItem extends MotionTest {
+    public static class MotionItem extends Motion {
         public int _id;
         public int status;
 
-        public MotionTestItem(int type) {
+        public MotionItem(int type) {
             super(type);
             this._id = -1;
             this.status = Status.NONE;
         }
 
-        public MotionTestItem(int id, int status, int type) {
+        public MotionItem(int id, int status, int type) {
             super(type);
             this._id = id;
             this.status = status;
