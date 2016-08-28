@@ -1,6 +1,7 @@
 package br.org.cesar.armrobotester.content;
 
 import android.content.Context;
+import android.database.DataSetObservable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import br.org.cesar.armrobotester.model.TestCase;
 /**
  * Created by bcb on 14/08/16.
  */
-public class TestManager {
+public class TestManager extends DataSetObservable {
 
     private static TestManager sInstance;
     private TestSuite mTestSuite;
@@ -29,11 +30,17 @@ public class TestManager {
     }
 
     public void addTest(TestCase testCase) {
-        mTestSuite.listTestCases.add(testCase);
+        if (mTestSuite.listTestCases.add(testCase)) {
+            notifyChanged();
+        }
     }
 
     public void removeTest(TestCase testCase) {
-        mTestSuite.listTestCases.remove(testCase);
+        if (mTestSuite.listTestCases.contains(testCase)) {
+            if (mTestSuite.listTestCases.remove(testCase)) {
+                notifyChanged();
+            }
+        }
     }
 
     public TestCase getTestCase(int index) {
@@ -42,9 +49,10 @@ public class TestManager {
 
     public void executeTest(TestCase testCase) {
         //TODO: Start test intent service
+        notifyChanged();
     }
 
-    public final List<TestCase> getTests() {
+    public final List<TestCase> getTestSuite() {
         List<TestCase> tests = null;
         Object obj = mTestSuite.listTestCases.clone();
         if (obj instanceof List<?>) {
@@ -54,11 +62,11 @@ public class TestManager {
         return tests;
     }
 
-    public class TestSuite {
-        public ArrayList<TestCase> listTestCases;
 
+    public class TestSuite {
+        public final ArrayList<TestCase> listTestCases;
         public TestSuite() {
-            listTestCases = new ArrayList<>();
+            listTestCases = new ArrayList<>(10);
         }
     }
 }

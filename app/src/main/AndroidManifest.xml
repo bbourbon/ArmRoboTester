@@ -12,7 +12,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DeviceConnectionActivity" />
         <activity
             android:name=".MainNaviActivity"
             android:exported="true"
@@ -20,7 +19,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -30,10 +28,47 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".WizardActivity"
+            android:exported="true"
+            android:label="@string/title_activity_wizard"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".DeviceConnectionActivity" />
+
+        <activity
+            android:name=".ui.TestSuiteActivity"
+            android:exported="false"
+            android:parentActivityName=".WizardActivity" />
+
+        <activity
+            android:name=".ui.TestCaseActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.TestSuiteActivity" />
+
+        <activity
+            android:name=".ui.ConnectionActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.TestSuiteActivity" />
+
+        <activity
+            android:name=".ui.ExecutionActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.ConnectionActivity" />
+
+        <activity
+            android:name=".ui.ReportActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.ExecutionActivity" />
+
     </application>
 
 </manifest>

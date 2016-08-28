@@ -27,7 +27,7 @@ import br.org.cesar.armrobotester.model.TestCase;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class AddTestCaseFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class TestCaseFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "ARM_ROBOT_TEST";
     ArrayAdapter<CharSequence> mAdapter1;
@@ -41,7 +41,7 @@ public class AddTestCaseFragment extends Fragment implements AdapterView.OnItemS
     private EditText mEditTextName;
     private EditText mEditTextId;
 
-    public AddTestCaseFragment() {
+    public TestCaseFragment() {
         // Required empty public constructor
     }
 
@@ -71,14 +71,14 @@ public class AddTestCaseFragment extends Fragment implements AdapterView.OnItemS
         mButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddTestCaseFragment.this.onAddClicked();
+                TestCaseFragment.this.onAddClicked();
             }
         });
 
         mButtonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddTestCaseFragment.this.onCancelClicked();
+                TestCaseFragment.this.onCancelClicked();
             }
         });
 
@@ -87,7 +87,6 @@ public class AddTestCaseFragment extends Fragment implements AdapterView.OnItemS
     }
 
     private void initSpinners() {
-        // TODO: Get List of Valid Motions
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         mAdapter1 = ArrayAdapter.createFromResource(this.getContext(),
@@ -126,15 +125,15 @@ public class AddTestCaseFragment extends Fragment implements AdapterView.OnItemS
         try {
             CharSequence motion1 = (CharSequence) mSpinnerMotion1.getSelectedItem();
             if (!TextUtils.isEmpty(motion1)) {
-                motionList.add(new Motion(Motion.MOTION_A));
+                motionList.add(new Motion(Motion.Type.Position, Motion.MIN_POSITION_VALUE));
             }
             CharSequence motion2 = (CharSequence) mSpinnerMotion1.getSelectedItem();
             if (!TextUtils.isEmpty(motion2)) {
-                motionList.add(new Motion(Motion.MOTION_B));
+                motionList.add(new Motion(Motion.Type.Position, Motion.MIN_POSITION_VALUE));
             }
             CharSequence motion3 = (CharSequence) mSpinnerMotion1.getSelectedItem();
             if (!TextUtils.isEmpty(motion3)) {
-                motionList.add(new Motion(Motion.MOTION_C));
+                motionList.add(new Motion(Motion.Type.Rotation, Motion.MAX_ROTATION_VALUE));
             }
         } catch (NullPointerException | ClassCastException ex) {
             Log.d(TAG, "Fail to get motions: " + ex.getLocalizedMessage());

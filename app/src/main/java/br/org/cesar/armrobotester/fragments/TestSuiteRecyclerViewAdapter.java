@@ -1,31 +1,47 @@
 package br.org.cesar.armrobotester.fragments;
 
+import android.content.Context;
+import android.database.DataSetObserver;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import br.org.cesar.armrobotester.R;
-import br.org.cesar.armrobotester.content.TestContent;
+import br.org.cesar.armrobotester.content.TestManager;
 import br.org.cesar.armrobotester.fragments.TestSuiteFragment.OnListFragmentInteractionListener;
+import br.org.cesar.armrobotester.model.TestCase;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link TestContent.MotionItem} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class TestSuiteRecyclerViewAdapter extends RecyclerView.Adapter<TestSuiteRecyclerViewAdapter.ViewHolder> {
+public class TestSuiteRecyclerViewAdapter extends
+        RecyclerView.Adapter<TestSuiteRecyclerViewAdapter.ViewHolder> {
 
-    private final ArrayList<TestContent.MotionItem> mValues;
+    private final DataSetObserver mTestSuiteObserver;
+    private final TestManager mTestManager;
     private final TestSuiteRecyclerViewAdapter.OnTestAdapterListener mListener;
+    private final Context mContext;
+    private List<TestCase> mValues;
 
-    public TestSuiteRecyclerViewAdapter(ArrayList<TestContent.MotionItem> items,
+    public TestSuiteRecyclerViewAdapter(@NonNull TestManager testManager, Context context,
                                         TestSuiteRecyclerViewAdapter.OnTestAdapterListener listener) {
-        mValues = items;
+
+        mTestSuiteObserver = new TestSuiteDataObserver(this);
         mListener = listener;
+        mContext = context;
+
+        mTestManager = testManager;
+        if (mTestManager == null) throw new NullPointerException("TestManager can't be null!");
+        mTestManager.registerObserver(mTestSuiteObserver);
+        mValues = mTestManager.getTestSuite();
+
     }
 
     @Override
@@ -37,7 +53,7 @@ public class TestSuiteRecyclerViewAdapter extends RecyclerView.Adapter<TestSuite
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
+        holder.mTestCase = mValues.get(position);
         holder.mTestDescription.setText(mValues.get(position).toString());
         holder.mTestStatus.setText(mValues.get(position).getStatus());
 
@@ -47,7 +63,7 @@ public class TestSuiteRecyclerViewAdapter extends RecyclerView.Adapter<TestSuite
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onClick(holder.mItem);
+                    mListener.onClick(holder.mTestCase);
                 }
             }
         });
@@ -56,7 +72,7 @@ public class TestSuiteRecyclerViewAdapter extends RecyclerView.Adapter<TestSuite
             @Override
             public boolean onLongClick(View v) {
                 if (null != mListener) {
-                    mListener.onLongClick(holder.mItem);
+                    mListener.onLongClick(holder.mTestCase);
                     return true;
                 }
                 return false;
@@ -69,40 +85,23 @@ public class TestSuiteRecyclerViewAdapter extends RecyclerView.Adapter<TestSuite
         return mValues.size();
     }
 
-    public void addItem(TestContent.MotionItem testItem) {
-        if (testItem != null) {
-            mValues.add(testItem);
-            if (null != mListener) mListener.onListFragmentItemCountChanged(mValues.size());
-            this.notifyDataSetChanged();
+    public void refresh() {
+        if (null != mValues) {
+            mValues.clear();
+            mValues = mTestManager.getTestSuite();
+
+            // TODO: Force List Update
+            notifyDataSetChanged();
         }
     }
 
-    public void removeItem(TestContent.MotionItem testItem) {
-        if (testItem != null) {
-            mValues.remove(testItem);
-            if (null != mListener) mListener.onListFragmentItemCountChanged(mValues.size());
-            this.notifyDataSetChanged();
-        }
-    }
-
-    public void updateItem(int position, TestContent.MotionItem testItem) {
-        if (null == testItem) return;
-        if (position >= 0 && position < mValues.size()) {
-            mValues.set(position, testItem);
-        } else {
-            int idx = mValues.indexOf(testItem);
-            if (idx != -1) mValues.set(idx, testItem);
-        }
-        this.notifyDataSetChanged();
-    }
-
+    /**
+     * Listener for this recycle view adapter
+     */
     public interface OnTestAdapterListener {
-        void onListFragmentInteraction(TestContent.MotionItem item);
+        void onClick(TestCase testCase);
 
-        void onLongClick(TestContent.MotionItem item);
-
-        void onClick(TestContent.MotionItem item);
-
+        void onLongClick(TestCase testCase);
         void onListFragmentItemCountChanged(int count);
     }
 
@@ -113,7 +112,7 @@ public class TestSuiteRecyclerViewAdapter extends RecyclerView.Adapter<TestSuite
         public final View mView;
         public final TextView mTestDescription;
         public final TextView mTestStatus;
-        public TestContent.MotionItem mItem;
+        public TestCase mTestCase;
 
         public ViewHolder(View view) {
             super(view);
@@ -128,4 +127,27 @@ public class TestSuiteRecyclerViewAdapter extends RecyclerView.Adapter<TestSuite
         }
     }
 
+    /**
+     * DataSetObserver for TestSuite
+     */
+    private class TestSuiteDataObserver extends DataSetObserver {
+
+        private final TestSuiteRecyclerViewAdapter mAdapter;
+
+        public TestSuiteDataObserver(TestSuiteRecyclerViewAdapter adapter) {
+            mAdapter = adapter;
+        }
+
+        @Override
+        public void onChanged() {
+            super.onChanged();
+            if (null != mAdapter) mAdapter.refresh();
+        }
+
+        @Override
+        public void onInvalidated() {
+            super.onInvalidated();
+            if (null != mAdapter) mAdapter.refresh();
+        }
+    }
 }

@@ -25,10 +25,9 @@ import android.widget.Toast;
 
 import java.util.Set;
 
-import br.org.cesar.armrobotester.content.TestContent;
-import br.org.cesar.armrobotester.fragments.AddTestCaseFragment;
 import br.org.cesar.armrobotester.fragments.SettingsFragment;
 import br.org.cesar.armrobotester.fragments.StatusFragment;
+import br.org.cesar.armrobotester.fragments.TestCaseFragment;
 import br.org.cesar.armrobotester.fragments.TestSuiteFragment;
 
 public class MainNaviActivity extends AppCompatActivity
@@ -204,10 +203,10 @@ public class MainNaviActivity extends AppCompatActivity
     private void onAddTests() {
         mFabOptions.setVisibility(FloatingActionButton.GONE);
 
-        final AddTestCaseFragment addTestCaseFragment = new AddTestCaseFragment();
+        final TestCaseFragment testCaseFragment = new TestCaseFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.relative_for_fragments, addTestCaseFragment)
+                .replace(R.id.relative_for_fragments, testCaseFragment)
                 .addToBackStack(ADD_TESTCASE_TAG)
                 .commit();
     }
@@ -275,21 +274,6 @@ public class MainNaviActivity extends AppCompatActivity
         }
 
         Log.d(TAG, "Dev: " + deviceName + ", MAC: " + deviceMacAddress);
-    }
-
-    @Override
-    public void onListFragmentInteraction(TestContent.MotionItem item) {
-
-    }
-
-    @Override
-    public void onLongClick(TestContent.MotionItem item) {
-        // TODO: Remove item
-    }
-
-    @Override
-    public void onClick(TestContent.MotionItem item) {
-        // TODO: Change Status
     }
 
     @Override
