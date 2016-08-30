@@ -181,8 +181,7 @@ public class TestCaseFragment extends Fragment implements AdapterView.OnItemSele
         testCase.setId(id);
         testCase.setMotionList(motions);
 
-        if (null != testCase)
-            TestManager.getInstance(getContext()).addTest(testCase);
+        TestManager.getInstance(getContext()).addTest(testCase);
     }
 
     @Override

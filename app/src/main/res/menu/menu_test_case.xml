@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.org.cesar.armrobotester.WizardActivity">
+    <item
+        android:id="@+id/action_clean"
+        android:orderInCategory="100"
+        android:title="@string/action_clean"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_remove"
+        android:orderInCategory="101"
+        android:title="@string/action_remove"
+        app:showAsAction="never" />
+</menu>

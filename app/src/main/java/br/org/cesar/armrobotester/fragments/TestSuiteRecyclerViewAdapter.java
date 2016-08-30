@@ -38,7 +38,6 @@ public class TestSuiteRecyclerViewAdapter extends
         mContext = context;
 
         mTestManager = testManager;
-        if (mTestManager == null) throw new NullPointerException("TestManager can't be null!");
         mTestManager.registerObserver(mTestSuiteObserver);
         mValues = mTestManager.getTestSuite();
 

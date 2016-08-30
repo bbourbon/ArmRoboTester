@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -36,7 +37,7 @@ public class MainNaviActivity extends AppCompatActivity
         SharedPreferences.OnSharedPreferenceChangeListener,
         FragmentManager.OnBackStackChangedListener {
 
-    public static final String TAG = "BRACO";
+    public static final String TAG = "ARM_TESTER";
     private static final String ADD_TESTCASE_TAG = "add_testcase_tag";
 
     private static final String TAG_TEST_FRAG = "tag_test_fragment";
@@ -156,7 +157,7 @@ public class MainNaviActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 

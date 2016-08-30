@@ -18,4 +18,8 @@
     <string name="test_case_label_motion">Motion:</string>
     <string name="add_button">Add</string>
     <string name="cancel_button">Cancel</string>
+    <string name="label_button_next">Next</string>
+    <string name="label_button_action">Action</string>
+    <string name="action_clean">Clean</string>
+    <string name="action_remove">Remove</string>
 </resources>

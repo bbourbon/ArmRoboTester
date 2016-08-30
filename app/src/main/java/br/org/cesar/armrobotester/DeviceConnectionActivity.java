@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.ParcelUuid;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -125,8 +126,8 @@ public class DeviceConnectionActivity extends Activity implements View.OnClickLi
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         boolean full_permission_granted = false;
         if (REQUEST_BLUETOOTH_PERMISSION == requestCode && permissions.length > 0) {
@@ -436,7 +437,7 @@ public class DeviceConnectionActivity extends Activity implements View.OnClickLi
         }
 
 
-        if (permissions != null && permissions.size() > 0) {
+        if (permissions.size() > 0) {
             String[] permissionsArray = new String[permissions.size()];
             permissionsArray = permissions.toArray(permissionsArray);
             ActivityCompat.requestPermissions(this, permissionsArray,

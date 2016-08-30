@@ -37,7 +37,7 @@ public class SensorActivityFragment extends Fragment implements SensorEventListe
     private boolean mRecordData = false;
     private TriggerEventListener mTriggerEventListener;
     private ArrayList<Sensor> mOneShotSensorList;
-    private ArrayList<Sensor> mContinuosSensorList;
+    private ArrayList<Sensor> mContinuousSensorList;
     private ArrayList<Sensor> mOnChangeSensorList;
     private ArrayList<Sensor> mSpecialTriggerSensorList;
 
@@ -57,7 +57,7 @@ public class SensorActivityFragment extends Fragment implements SensorEventListe
         mCurrentReportFileName = "report.txt";
 
         mOneShotSensorList = new ArrayList<>();
-        mContinuosSensorList = new ArrayList<>();
+        mContinuousSensorList = new ArrayList<>();
         mOnChangeSensorList = new ArrayList<>();
         mSpecialTriggerSensorList = new ArrayList<>();
     }
@@ -101,22 +101,22 @@ public class SensorActivityFragment extends Fragment implements SensorEventListe
         StringBuilder builder = new StringBuilder();
         log(TAG, "Sensor changed: " + event.sensor.getName());
         builder.append("action: sensor change");
-        builder.append(", sensor: " + event.sensor.getName());
-        builder.append(", type: " + event.sensor.getStringType());
+        builder.append(", sensor: ").append(event.sensor.getName());
+        builder.append(", type: ").append(event.sensor.getStringType());
 
         int accuracy = event.accuracy;
         long timestamp = event.timestamp;
 
         log(TAG, "acc: " + accuracy);
         log(TAG, "timestamp: " + timestamp);
-        builder.append(", acc: " + accuracyToString(accuracy));
-        builder.append(", timestamp: " + timestamp);
+        builder.append(", acc: ").append(accuracyToString(accuracy));
+        builder.append(", timestamp: ").append(timestamp);
 
 
         for (int i = 0; i < event.values.length; i++) {
             float v = event.values[i];
             log(TAG, "value[" + i + "]: " + v);
-            builder.append(", value[" + i + "]: " + v);
+            builder.append(", value[").append(i).append("]: ").append(v);
         }
 
         String message = builder.toString() + ";";
@@ -143,7 +143,7 @@ public class SensorActivityFragment extends Fragment implements SensorEventListe
 
         List<Sensor> sensorList = mSensorManager.getSensorList(Sensor.TYPE_ALL);
 
-        for (Sensor s : mContinuosSensorList) {
+        for (Sensor s : mContinuousSensorList) {
             mSensorManager.registerListener(this, s, SensorManager.SENSOR_DELAY_UI);
         }
 
@@ -181,7 +181,7 @@ public class SensorActivityFragment extends Fragment implements SensorEventListe
         if (mSensorManager == null) return;
         mRecordData = false;
 
-        mContinuosSensorList.clear();
+        mContinuousSensorList.clear();
         mOnChangeSensorList.clear();
         mSpecialTriggerSensorList.clear();
         mOneShotSensorList.clear();
@@ -200,7 +200,7 @@ public class SensorActivityFragment extends Fragment implements SensorEventListe
                 switch (defaultSensorForType.getReportingMode()) {
                     case Sensor.REPORTING_MODE_CONTINUOUS:
                         Log.d(TAG, "Sensor reporting mode: Continuous");
-                        mContinuosSensorList.add(defaultSensorForType);
+                        mContinuousSensorList.add(defaultSensorForType);
                         break;
                     case Sensor.REPORTING_MODE_ON_CHANGE:
                         Log.d(TAG, "Sensor reporting mode: On Change");
@@ -258,19 +258,19 @@ public class SensorActivityFragment extends Fragment implements SensorEventListe
     private void onTrigger(TriggerEvent event) {
         StringBuilder builder = new StringBuilder();
         log(TAG, "Trigger Event for: " + event.sensor.getName());
-        builder.append("action: trigger, sensor: " + event.sensor.getName());
-        builder.append(", type: " + event.sensor.getStringType());
+        builder.append("action: trigger, sensor: ").append(event.sensor.getName());
+        builder.append(", type: ").append(event.sensor.getStringType());
 
 
         long timestamp = event.timestamp;
 
         log(TAG, "timestamp: " + timestamp);
-        builder.append(", timestamp: " + timestamp);
+        builder.append(", timestamp: ").append(timestamp);
 
         for (int i = 0; i < event.values.length; i++) {
             float v = event.values[i];
             log(TAG, "value[" + i + "]: " + v);
-            builder.append(", value[" + i + "]: " + v);
+            builder.append(", value[").append(i).append("]: ").append(v);
         }
 
         // TODO: Re-trigger listener?

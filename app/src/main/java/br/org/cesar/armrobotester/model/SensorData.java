@@ -21,9 +21,7 @@ public class SensorData implements Comparator<SensorData> {
     public SensorData(@NonNull Sensor sensor, @NonNull float[] values) {
         mSensor = sensor;
         mValues = new float[values.length];
-        for (int i = 0; i < values.length; i++) {
-            mValues[i] = values[i];
-        }
+        System.arraycopy(values, 0, mValues, 0, values.length);
     }
 
     public SensorData(@NonNull SensorEvent sensorEvent) {
@@ -34,9 +32,7 @@ public class SensorData implements Comparator<SensorData> {
         float[] values = sensorEvent.values;
 
         mValues = new float[values.length];
-        for (int i = 0; i < values.length; i++) {
-            mValues[i] = values[i];
-        }
+        System.arraycopy(values, 0, mValues, 0, values.length);
     }
 
     public SensorData(@NonNull TriggerEvent triggerEvent) {
@@ -45,9 +41,7 @@ public class SensorData implements Comparator<SensorData> {
         float[] values = triggerEvent.values;
 
         mValues = new float[values.length];
-        for (int i = 0; i < values.length; i++) {
-            mValues[i] = values[i];
-        }
+        System.arraycopy(values, 0, mValues, 0, values.length);
     }
 
     @Override

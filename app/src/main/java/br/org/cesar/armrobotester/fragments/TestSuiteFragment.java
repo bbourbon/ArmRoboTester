@@ -116,8 +116,6 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
         // TODO: Open Test Case Fragment for edit
     }
 
-    ;
-
     @Override
     public void onListFragmentItemCountChanged(int count) {
         if (null != mListener)

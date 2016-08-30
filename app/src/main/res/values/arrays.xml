@@ -10,7 +10,7 @@
 
     <!-- Tests List-->
     <string-array name="list_test">
-        <item></item>
+        <item>None</item>
         <item>Rotation</item>
         <item>Motion</item>
     </string-array>
