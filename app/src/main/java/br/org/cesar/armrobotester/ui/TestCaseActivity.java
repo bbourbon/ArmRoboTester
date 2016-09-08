@@ -2,6 +2,7 @@ package br.org.cesar.armrobotester.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import br.org.cesar.armrobotester.R;
+import br.org.cesar.armrobotester.fragments.TestCaseFragment;
 
 /**
  * Created by bcb on 28/08/16.
@@ -21,6 +23,7 @@ public class TestCaseActivity extends AppCompatActivity {
 
     public static final String ACTION_NEW_TEST = "br.org.cesar.armrobotester.action_new_test";
     public static final String ACTION_EDIT_TEST = "br.org.cesar.armrobotester.action_edit_test";
+    private static final String TAG_TEST_CASE_FRAG = "test_case_fragment";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +37,7 @@ public class TestCaseActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         Button buttonAction = (Button) findViewById(R.id.button_action);
-        buttonAction.setVisibility(View.VISIBLE);
+        buttonAction.setVisibility(View.GONE);
         buttonAction.setText("Add Test");
         buttonAction.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,7 +47,7 @@ public class TestCaseActivity extends AppCompatActivity {
         });
 
         Button buttonNext = (Button) findViewById(R.id.button_next);
-        buttonNext.setVisibility(View.VISIBLE);
+        buttonNext.setVisibility(View.GONE);
         buttonNext.setText("Cancel");
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +55,28 @@ public class TestCaseActivity extends AppCompatActivity {
                 onNextButtonClicked();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        final TestCaseFragment testCaseFragment = new TestCaseFragment();
+        testCaseFragment.setOnTestCaseListener(new TestCaseFragment.OnTestCaseListener() {
+            @Override
+            public void onCancel() {
+                TestCaseActivity.this.finish();
+            }
+
+            @Override
+            public void onAdd() {
+                // TODO: ???
+            }
+        });
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_placement, testCaseFragment, TAG_TEST_CASE_FRAG)
+                .commit();
+
+        super.onResume();
     }
 
     @Override
@@ -110,8 +135,4 @@ public class TestCaseActivity extends AppCompatActivity {
         Toast.makeText(this, "Test Case added", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 }

@@ -22,4 +22,12 @@
     <string name="label_button_action">Action</string>
     <string name="action_clean">Clean</string>
     <string name="action_remove">Remove</string>
+    <string name="text_wizard_instructions">1. Create Test Suite\n2. Connect to Device\n3. Execute Tests\n4. Read Report</string>
+    <string name="title_activity_single_test">Arm Simple</string>
+    <string name="label_button_reset">Reset</string>
+    <string name="label_button_run">Run</string>
+    <string name="label_select_device">Select Device:</string>
+    <string name="label_shoulder">Shoulder</string>
+    <string name="label_elbow">Elbow</string>
+    <string name="label_wrist">Wrist</string>
 </resources>

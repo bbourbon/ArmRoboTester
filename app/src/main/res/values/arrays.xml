@@ -7,17 +7,4 @@
     <string-array name="list_values_empty">
         <item>0</item>
     </string-array>
-
-    <!-- Tests List-->
-    <string-array name="list_test">
-        <item>None</item>
-        <item>Rotation</item>
-        <item>Motion</item>
-    </string-array>
-    <string-array name="list_values_tests">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-
 </resources>

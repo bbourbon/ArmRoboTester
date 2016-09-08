@@ -46,4 +46,5 @@ public class TestCase {
     public void setStatus(String status) {
         mStatus = status;
     }
+
 }

@@ -1,34 +1,52 @@
 package br.org.cesar.armrobotester.model;
 
+import android.util.Log;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Locale;
+
+import static br.org.cesar.armrobotester.MainNaviActivity.TAG;
+
 /**
  * Created by bcb on 03/07/16.
  */
 public class Motion {
 
     public static final int INVALID_VALUE = -1;
-    public static final int MAX_POSITION_VALUE = 1024;
-    public static final int MIN_POSITION_VALUE = 0;
-    public static final int MAX_ROTATION_VALUE = 1024;
+    public static final int MAX_ROTATION_VALUE = 360;
     public static final int MIN_ROTATION_VALUE = 0;
-    private Type type;
-    private int value;
+
+    private int rotationValue;
+    private boolean shoulderMotion = false;
+    private boolean elbowMotion = false;
+    private boolean wristMotion = false;
 
     public Motion() {
-        setType(Type.Invalid);
-        setValue(INVALID_VALUE);
+        setRotationValue(INVALID_VALUE);
     }
 
-    public Motion(Type t, int v) {
-        setType(t);
-        setValue(checkValue(t, v));
+    public Motion(boolean shoulder, boolean elbow, boolean wrist, int v) {
+        shoulderMotion = shoulder;
+        elbowMotion = elbow;
+        wristMotion = wrist;
+        setRotationValue(checkValue(v));
     }
 
-    private int checkValue(Type t, int v) {
+    public static String decodeResult(byte[] inBuffer, int read) {
+        // DECODE: Motion result values;
+        String response = null;
+        try {
+            response = new String(inBuffer, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    private int checkValue(int v) {
         int result;
 
-        if (Type.Position == t && v >= MIN_POSITION_VALUE && v <= MAX_POSITION_VALUE) {
-            result = v;
-        } else if (Type.Rotation == t && v >= MIN_ROTATION_VALUE && v <= MAX_ROTATION_VALUE) {
+        if (v >= MIN_ROTATION_VALUE && v <= MAX_ROTATION_VALUE) {
             result = v;
         } else {
             result = INVALID_VALUE;
@@ -37,31 +55,60 @@ public class Motion {
         return result;
     }
 
-    public Type getType() {
-        return this.type;
+    public int getRotationValue() {
+        return rotationValue;
     }
 
-    public void setType(Type type) {
-        this.type = type;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = checkValue(this.type, value);
+    public void setRotationValue(int rotationValue) {
+        this.rotationValue = checkValue(rotationValue);
     }
 
     @Override
     public String toString() {
-        if (Type.Invalid == this.type) return "Invalid Motion";
-        return "Motion[" + type.toString() + "]: " + value;
+        String s = null;
+
+        try {
+            s = new String(commandArduino(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
+
+        return s;
     }
 
-    public enum Type {
-        Position,
-        Rotation,
-        Invalid
+    public byte[] commandArduino() {
+        //TODO: Convert any motion to a byte sequence
+        // [ocp180] - [0,0,0,000] - [0|o,0|c,0|p,000-360]
+        // o - Shoulder; c - Elbow; p - Wrist
+        String command = "";
+        if (shoulderMotion) {
+            command += "o";
+        } else {
+            command += "0";
+        }
+
+        if (elbowMotion) {
+            command += "c";
+        } else {
+            command += "0";
+        }
+
+        if (wristMotion) {
+            command += "p";
+        } else {
+            command += "0";
+        }
+
+        String value = "000";
+        if (rotationValue != INVALID_VALUE) {
+            value = String.format(Locale.getDefault(), "%03d", rotationValue);
+        }
+        command += value;
+
+        Log.d(TAG, "Command: " + command);
+        byte com[] = command.getBytes();
+
+        return com;
     }
+
 }

@@ -33,6 +33,18 @@
         </activity>
         <activity android:name=".DeviceConnectionActivity" />
 
+
+        <!-- SINGLE TEST ACTIVITY -->
+        <activity
+            android:name=".SingleTestActivity"
+            android:label="@string/title_activity_single_test"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <!-- WIZARD MODE ACTIVITIES -->
         <activity
             android:name=".WizardActivity"

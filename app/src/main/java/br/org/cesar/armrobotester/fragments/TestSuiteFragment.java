@@ -78,7 +78,10 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
-        mTestRecyclerViewAdapter.refresh();
+
+        if (mTestRecyclerViewAdapter != null) {
+            mTestRecyclerViewAdapter.refresh();
+        }
     }
 
     @Override

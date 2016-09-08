@@ -3,6 +3,7 @@ package br.org.cesar.armrobotester;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import br.org.cesar.armrobotester.fragments.InstructionFragment;
 import br.org.cesar.armrobotester.ui.SettingsActivity;
 import br.org.cesar.armrobotester.ui.TestSuiteActivity;
 
@@ -18,6 +20,8 @@ import br.org.cesar.armrobotester.ui.TestSuiteActivity;
  */
 
 public class WizardActivity extends AppCompatActivity {
+
+    private static final String TAG_INSTRUCTION_FRAG = "tag_instruction_fragment";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +39,17 @@ public class WizardActivity extends AppCompatActivity {
                 onNextScreen();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        final InstructionFragment instructionFragment = new InstructionFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_placement, instructionFragment, TAG_INSTRUCTION_FRAG)
+                .commit();
+
+        super.onResume();
     }
 
     private void onNextScreen() {
