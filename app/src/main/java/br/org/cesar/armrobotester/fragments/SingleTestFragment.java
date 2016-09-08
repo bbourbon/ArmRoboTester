@@ -191,18 +191,27 @@ public class SingleTestFragment extends Fragment implements AdapterView.OnItemSe
 
             // Motion 1
             boolean shoulder1 = mCheckShoulder1.isChecked();
-            boolean below1 = mCheckElbow1.isChecked();
+            boolean elbow1 = mCheckElbow1.isChecked();
             boolean wrist1 = mCheckWrist1.isChecked();
+            String value1 = mEditTextValue1.getText().toString();
+            Motion m1 = getMotion(shoulder1, elbow1, wrist1, value1);
+            if (m1 != null) motionList.add(m1);
 
             // Motion 2
             boolean shoulder2 = mCheckShoulder2.isChecked();
-            boolean below2 = mCheckElbow2.isChecked();
+            boolean elbow2 = mCheckElbow2.isChecked();
             boolean wrist2 = mCheckWrist2.isChecked();
+            String value2 = mEditTextValue2.getText().toString();
+            Motion m2 = getMotion(shoulder2, elbow2, wrist2, value2);
+            if (m2 != null) motionList.add(m2);
 
             // Motion 3
             boolean shoulder3 = mCheckShoulder3.isChecked();
-            boolean below3 = mCheckShoulder3.isChecked();
+            boolean elbow3 = mCheckShoulder3.isChecked();
             boolean wrist3 = mCheckShoulder3.isChecked();
+            String value3 = mEditTextValue3.getText().toString();
+            Motion m3 = getMotion(shoulder3, elbow3, wrist3, value3);
+            if (m3 != null) motionList.add(m3);
 
             if (motionList.size() > 0) {
                 testCase.setMotionList(motionList);
@@ -229,17 +238,30 @@ public class SingleTestFragment extends Fragment implements AdapterView.OnItemSe
         mEditTextValue2.getEditableText().clear();
         mEditTextValue3.getEditableText().clear();
 
+        // un-check
+        mCheckShoulder1.setChecked(false);
+        mCheckElbow1.setChecked(false);
+        mCheckWrist1.setChecked(false);
+
+        mCheckShoulder2.setChecked(false);
+        mCheckElbow2.setChecked(false);
+        mCheckWrist2.setChecked(false);
+
+        mCheckShoulder3.setChecked(false);
+        mCheckElbow3.setChecked(false);
+        mCheckWrist3.setChecked(false);
+
         // Bluetooth devices
         mSpinnerPairedDevices.setSelection(0);
     }
 
-    private Motion getMotion(String type, String value) {
+    private Motion getMotion(boolean shoulder, boolean elbow, boolean wrist, String value) {
         Motion motion = null;
 
         try {
-            boolean o = false;
-            boolean c = false;
-            boolean p = false;
+            boolean o = shoulder;
+            boolean c = elbow;
+            boolean p = wrist;
 
             int v = 0;
             if (!TextUtils.isEmpty(value)) v = Integer.parseInt(value);

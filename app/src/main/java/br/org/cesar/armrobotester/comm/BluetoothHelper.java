@@ -1,4 +1,4 @@
-package br.org.cesar.armrobotester.helper;
+package br.org.cesar.armrobotester.comm;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
+import br.org.cesar.armrobotester.helper.Constants;
+
 /**
  * Created by dlmc on 09/08/16.
  */
@@ -22,14 +24,17 @@ import java.util.UUID;
 public class BluetoothHelper {
 
 
+    // Constants that indicate the current connection state
+    public static final int STATE_NONE = 0;       // we're doing nothing
+    public static final int STATE_LISTEN = 1;     // now listening for incoming connections
+    public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
+    public static final int STATE_CONNECTED = 3;  // now connected to a remote device
     private static final String TAG = "BluetoothHelper";
-
     // Unique UUID for this application
     private static final UUID MY_UUID_SECURE =
             UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
     private static final UUID MY_UUID_INSECURE =
             UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
-
     // Member fields
     private final BluetoothAdapter mAdapter;
     private final Handler mHandler;
@@ -39,17 +44,17 @@ public class BluetoothHelper {
     private int mState;
 
 
-    // Constants that indicate the current connection state
-    public static final int STATE_NONE = 0;       // we're doing nothing
-    public static final int STATE_LISTEN = 1;     // now listening for incoming connections
-    public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
-    public static final int STATE_CONNECTED = 3;  // now connected to a remote device
-
-
     public BluetoothHelper(Context context, Handler handler) {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = STATE_NONE;
         mHandler = handler;
+    }
+
+    /**
+     * Return the current connection state.
+     */
+    public synchronized int getState() {
+        return mState;
     }
 
     /**
@@ -63,13 +68,6 @@ public class BluetoothHelper {
 
         // Give the new state to the Handler so the UI Activity can update
         mHandler.obtainMessage(Constants.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
-    }
-
-    /**
-     * Return the current connection state.
-     */
-    public synchronized int getState() {
-        return mState;
     }
 
     /**

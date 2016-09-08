@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
@@ -24,9 +23,7 @@ public class ConnectionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.wizard_layout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_wizard);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_wizard_layout);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Connection");

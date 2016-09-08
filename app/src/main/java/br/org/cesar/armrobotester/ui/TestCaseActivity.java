@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,13 +23,12 @@ public class TestCaseActivity extends AppCompatActivity {
     public static final String ACTION_NEW_TEST = "br.org.cesar.armrobotester.action_new_test";
     public static final String ACTION_EDIT_TEST = "br.org.cesar.armrobotester.action_edit_test";
     private static final String TAG_TEST_CASE_FRAG = "test_case_fragment";
+    private TestCaseFragment mTestCaseFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.wizard_layout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_wizard);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_wizard_layout);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Add Test Case");
@@ -59,8 +57,8 @@ public class TestCaseActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        final TestCaseFragment testCaseFragment = new TestCaseFragment();
-        testCaseFragment.setOnTestCaseListener(new TestCaseFragment.OnTestCaseListener() {
+        this.mTestCaseFragment = new TestCaseFragment();
+        mTestCaseFragment.setOnTestCaseListener(new TestCaseFragment.OnTestCaseListener() {
             @Override
             public void onCancel() {
                 TestCaseActivity.this.finish();
@@ -73,7 +71,7 @@ public class TestCaseActivity extends AppCompatActivity {
         });
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_placement, testCaseFragment, TAG_TEST_CASE_FRAG)
+                .replace(R.id.fragment_placement, mTestCaseFragment, TAG_TEST_CASE_FRAG)
                 .commit();
 
         super.onResume();
@@ -132,6 +130,7 @@ public class TestCaseActivity extends AppCompatActivity {
     }
 
     private void onActionButtonClicked() {
+        mTestCaseFragment.addTestCase();
         Toast.makeText(this, "Test Case added", Toast.LENGTH_SHORT).show();
     }
 

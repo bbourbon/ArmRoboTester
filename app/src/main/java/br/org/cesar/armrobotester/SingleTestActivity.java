@@ -1,6 +1,7 @@
 package br.org.cesar.armrobotester;
 
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -8,8 +9,8 @@ import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,16 +38,20 @@ public class SingleTestActivity extends AppCompatActivity {
     private Button mButtonReset;
     private Button mButtonRun;
     private BluetoothDevice mBluetoothDevice;
+    private BluetoothManager mBluetoothManager;
     private TestCase mTestCase;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_test_layout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_wizard);
-        setSupportActionBar(toolbar);
+        // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_wizard);
+        // setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Single Test");
+        ActionBar actionBar = getSupportActionBar();//.setTitle("Single Test");
+        if (actionBar != null) {
+            actionBar.setTitle("Single Test");
+        }
 
         mButtonReset = (Button) findViewById(R.id.button_reset);
         mButtonReset.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +68,9 @@ public class SingleTestActivity extends AppCompatActivity {
                 run();
             }
         });
+
+        mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+
     }
 
     @Override
@@ -73,6 +81,7 @@ public class SingleTestActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.fragment_placement, mSingleTestFragment)
                 .commit();
+
         super.onResume();
     }
 
