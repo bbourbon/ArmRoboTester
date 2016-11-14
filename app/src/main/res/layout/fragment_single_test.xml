@@ -50,7 +50,8 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/test_case_name_hint" />
+            android:hint="@string/test_case_name_hint"
+            android:text="Test Case 001" />
 
         <!-- Test Case ID -->
         <TextView
@@ -66,7 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="@string/test_case_id_hint"
-            android:inputType="number" />
+            android:inputType="number"
+            android:text="123" />
     </LinearLayout>
 
     <!-- First Motion [Mandatory] -->

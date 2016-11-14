@@ -17,7 +17,7 @@ import br.org.cesar.armrobotester.fragments.TestSuiteFragment.OnListFragmentInte
 import br.org.cesar.armrobotester.model.TestCase;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link TestContent.MotionItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link TestCase} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
@@ -53,8 +53,15 @@ public class TestSuiteRecyclerViewAdapter extends
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mTestCase = mValues.get(position);
-        holder.mTestDescription.setText(mValues.get(position).toString());
-        holder.mTestStatus.setText(mValues.get(position).getStatus());
+
+        String description = "Name: " + holder.mTestCase.getName();
+        description += ", ID: " + holder.mTestCase.getId();
+
+        String status = "Motion #: " + holder.mTestCase.getMotionTestList().size();
+        status += ", Status: " + holder.mTestCase.getStatus();
+
+        holder.mTestDescription.setText(description);
+        holder.mTestStatus.setText(status);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

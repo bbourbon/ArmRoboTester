@@ -1,7 +1,9 @@
 package br.org.cesar.armrobotester.content;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.database.DataSetObservable;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ public class TestManager extends DataSetObservable {
 
     private static TestManager sInstance;
     private TestSuite mTestSuite;
+    private BluetoothDevice mTargetDevice;
     private Context mContext;
 
     private TestManager(Context context) {
@@ -62,6 +65,13 @@ public class TestManager extends DataSetObservable {
         return tests;
     }
 
+    public BluetoothDevice getTargetDevice () {
+        return mTargetDevice;
+    }
+
+    public void setTargetDevice (@NonNull BluetoothDevice device) {
+        mTargetDevice = device;
+    }
 
     public class TestSuite {
         public final ArrayList<TestCase> listTestCases;

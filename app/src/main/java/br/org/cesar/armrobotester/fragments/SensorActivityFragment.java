@@ -53,7 +53,7 @@ public class SensorActivityFragment extends Fragment implements SensorEventListe
             }
         };
 
-        // Standard name should change every time record method is called;
+        // Standard name should change every time startRecord method is called;
         mCurrentReportFileName = "report.txt";
 
         mOneShotSensorList = new ArrayList<>();

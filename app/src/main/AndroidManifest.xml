@@ -16,7 +16,7 @@
         <!-- Navigation Menu -->
         <activity
             android:name=".MainNaviActivity"
-            android:enabled="false"
+            android:enabled="true"
             android:exported="true"
             android:label="@string/title_activity_main_navi"
             android:theme="@style/AppTheme.NoActionBar">

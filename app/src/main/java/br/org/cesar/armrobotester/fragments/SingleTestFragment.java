@@ -3,6 +3,7 @@ package br.org.cesar.armrobotester.fragments;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
+import android.os.ParcelUuid;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import br.org.cesar.armrobotester.R;
 import br.org.cesar.armrobotester.model.Motion;
@@ -33,26 +35,21 @@ public class SingleTestFragment extends Fragment implements AdapterView.OnItemSe
 
     private static final String TAG = "SingleTest";
     private static final String NONE = "None";
+    private static final UUID SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private EditText mEditTextName;
     private EditText mEditTextId;
-
     private EditText mEditTextValue1;
     private EditText mEditTextValue2;
     private EditText mEditTextValue3;
-
     private CheckBox mCheckShoulder1;
     private CheckBox mCheckElbow1;
     private CheckBox mCheckWrist1;
-
     private CheckBox mCheckShoulder2;
     private CheckBox mCheckElbow2;
     private CheckBox mCheckWrist2;
-
     private CheckBox mCheckShoulder3;
     private CheckBox mCheckElbow3;
     private CheckBox mCheckWrist3;
-
-
     private Spinner mSpinnerPairedDevices;
     private ArrayList<String> mPairedDeviceList;
     private ArrayAdapter<String> mAdapterPairedDevices;
@@ -115,7 +112,9 @@ public class SingleTestFragment extends Fragment implements AdapterView.OnItemSe
         for (BluetoothDevice device : bondedDevices) {
             String name = device.getName();
             if (TextUtils.isEmpty(name)) name = device.getAddress();
-            mPairedDeviceList.add(name);
+            if (hasSppSupport(device)) {
+                mPairedDeviceList.add(name);
+            }
         }
     }
 
@@ -227,7 +226,6 @@ public class SingleTestFragment extends Fragment implements AdapterView.OnItemSe
         return testCase;
     }
 
-
     public void reset() {
         // Test case identification
         mEditTextName.getEditableText().clear();
@@ -264,7 +262,11 @@ public class SingleTestFragment extends Fragment implements AdapterView.OnItemSe
             boolean p = wrist;
 
             int v = 0;
-            if (!TextUtils.isEmpty(value)) v = Integer.parseInt(value);
+            if (!TextUtils.isEmpty(value))  {
+                v = Integer.parseInt(value);
+            } else {
+                return null;
+            }
 
             // TODO: Check limits for the value
             motion = new Motion(o, c, p, v);
@@ -275,4 +277,24 @@ public class SingleTestFragment extends Fragment implements AdapterView.OnItemSe
 
         return motion;
     }
+
+    public boolean hasSppSupport(BluetoothDevice device) {
+        boolean result = false;
+        if (device == null) return false;
+
+        ParcelUuid[] uuids = device.getUuids();
+
+        if (uuids != null) {
+            for (ParcelUuid uuid : uuids) {
+                String log = "Device [" + device.getName() + "] UUID: ";
+                log += uuid.toString();
+                Log.d(TAG, log);
+
+                result = result || (SPP_UUID.equals(uuid.getUuid()));
+            }
+        }
+        Log.d(TAG, "Device has SPP? " + result);
+        return result;
+    }
+
 }

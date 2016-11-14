@@ -65,7 +65,7 @@ public class SensorActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     SensorActivity.this.stopRecord();
-                    Snackbar.make(view, "Stopping record Sensors...", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "Stopping startRecord Sensors...", Snackbar.LENGTH_LONG)
                             .show();
 
                 }
@@ -86,7 +86,7 @@ public class SensorActivity extends AppCompatActivity {
 //                            .setAction("Action", new View.OnClickListener() {
 //                                @Override
 //                                public void onClick(View v) {
-//                                    SensorActivity.this.record();
+//                                    SensorActivity.this.startRecord();
 //                                }
 //                            })
                             .show();

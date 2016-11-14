@@ -30,11 +30,15 @@ public class BluetoothHelper {
     public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
     public static final int STATE_CONNECTED = 3;  // now connected to a remote device
     private static final String TAG = "BluetoothHelper";
+
     // Unique UUID for this application
+    private static final UUID SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
     private static final UUID MY_UUID_SECURE =
             UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
     private static final UUID MY_UUID_INSECURE =
             UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
+
     // Member fields
     private final BluetoothAdapter mAdapter;
     private final Handler mHandler;
@@ -217,7 +221,7 @@ public class BluetoothHelper {
      */
     private void connectionFailed() {
         // Send a failure message back to the Activity
-        Message msg = mHandler.obtainMessage(Constants.MESSAGE_TOAST);
+        Message msg = mHandler.obtainMessage(Constants.MESSAGE_CONNECTION_FAILED);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.TOAST, "Unable to connect device");
         msg.setData(bundle);
@@ -232,7 +236,7 @@ public class BluetoothHelper {
      */
     private void connectionLost() {
         // Send a failure message back to the Activity
-        Message msg = mHandler.obtainMessage(Constants.MESSAGE_TOAST);
+        Message msg = mHandler.obtainMessage(Constants.MESSAGE_CONNECTION_LOST);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.TOAST, "Device connection was lost");
         msg.setData(bundle);
@@ -354,10 +358,10 @@ public class BluetoothHelper {
             try {
                 if (secure) {
                     tmp = device.createRfcommSocketToServiceRecord(
-                            MY_UUID_SECURE);
+                            SPP_UUID);//MY_UUID_SECURE);
                 } else {
                     tmp = device.createInsecureRfcommSocketToServiceRecord(
-                            MY_UUID_INSECURE);
+                            SPP_UUID);//MY_UUID_INSECURE);
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Socket Type: " + mSocketType + "create() failed", e);

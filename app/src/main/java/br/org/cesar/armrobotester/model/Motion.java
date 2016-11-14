@@ -3,6 +3,7 @@ package br.org.cesar.armrobotester.model;
 import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.Locale;
 
 import static br.org.cesar.armrobotester.MainNaviActivity.TAG;
@@ -35,11 +36,16 @@ public class Motion {
     public static String decodeResult(byte[] inBuffer, int read) {
         // DECODE: Motion result values;
         String response = null;
+
+        byte toDecode[];
+        toDecode = Arrays.copyOf(inBuffer, read);
+
         try {
-            response = new String(inBuffer, "UTF-8");
+            response = new String(toDecode, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        Log.d(TAG, "Decoded response: " + response);
         return response;
     }
 
@@ -109,6 +115,19 @@ public class Motion {
         byte com[] = command.getBytes();
 
         return com;
+    }
+
+
+    private void dec() {
+        //M,1,T,000
+
+        // M - Motor, 1-4 ID do motor, Sensor (T-temperatura, V-Velocidade, Q-Torque, A-Angulo
+        // ### - valor do sensor
+
+        // ROK
+        // RFAIL
+
+
     }
 
 }
