@@ -267,8 +267,9 @@ public class MainNaviActivity extends AppCompatActivity
             deviceName = deviceMacAddress;
         }
 
+        // TODO: Force Bluetooth Device Name
         deviceName = "HC-06";
-        deviceMacAddress = "98:D3:31:B2:8F:E4";
+        deviceMacAddress = "98:D3:31:B5:81:CC";
 
         if (!TextUtils.isEmpty(deviceName) && !TextUtils.isEmpty(deviceMacAddress)) {
             if (null != mTextDeviceName)
