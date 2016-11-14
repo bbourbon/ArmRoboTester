@@ -39,7 +39,8 @@ public class TestSuiteRecyclerViewAdapter extends
 
         mTestManager = testManager;
         mTestManager.registerObserver(mTestSuiteObserver);
-        mValues = mTestManager.getTestSuite();
+        // TODO - Change the method to return the preferable values
+        mValues = mTestManager.getTestSuite(); // THIS WILL RETURN NULL
 
     }
 

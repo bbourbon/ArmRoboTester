@@ -5,7 +5,7 @@
         <item
             android:id="@+id/nav_tests"
             android:icon="@drawable/ic_menu_test"
-            android:title="Tests" />
+            android:title="Test Manager" />
         <item
             android:id="@+id/nav_calibrate"
             android:icon="@drawable/ic_menu_calibrate"

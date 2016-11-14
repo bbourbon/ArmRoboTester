@@ -16,13 +16,15 @@ import br.org.cesar.armrobotester.model.TestCase;
 public class TestManager extends DataSetObservable {
 
     private static TestManager sInstance;
-    private TestSuite mTestSuite;
+    private List<TestSuite> mTestSuiteList;
     private BluetoothDevice mTargetDevice;
     private Context mContext;
+    private TestSuite mPreferedSuite;
 
     private TestManager(Context context) {
-        mTestSuite = new TestSuite();
         mContext = context;
+        mTestSuiteList = new ArrayList<>();
+        mPreferedSuite = null;
     }
 
     public static TestManager getInstance(Context context) {
@@ -32,37 +34,47 @@ public class TestManager extends DataSetObservable {
         return sInstance;
     }
 
+    public TestSuite createTestSuite(String name) {
+        TestSuite suite = new TestSuite(name);
+        mPreferedSuite = suite;
+        mTestSuiteList.add(suite);
+        return suite;
+    }
+
     public void addTest(TestCase testCase) {
-        if (mTestSuite.listTestCases.add(testCase)) {
+        addTest(mPreferedSuite, testCase);
+    }
+
+    public void addTest(TestSuite suite, TestCase testCase) {
+        if (suite != null && suite.addTest(testCase)) {
+            notifyChanged();
+        }
+    }
+
+    public void removeTest(TestSuite suite, TestCase testCase) {
+        if (suite != null && suite.removeTest(testCase)) {
             notifyChanged();
         }
     }
 
     public void removeTest(TestCase testCase) {
-        if (mTestSuite.listTestCases.contains(testCase)) {
-            if (mTestSuite.listTestCases.remove(testCase)) {
-                notifyChanged();
+        for (TestSuite suite : mTestSuiteList) {
+            List<TestCase> testList = suite.getTests();
+            for (TestCase testObject : testList ) {
+                if (testObject.equals(testCase)) {
+                    this.removeTest(suite, testCase);
+                }
             }
         }
     }
 
-    public TestCase getTestCase(int index) {
-        return mTestSuite.listTestCases.get(index);
+    public TestCase getTestCase(TestSuite suite, int index) {
+        return suite != null ? suite.getTest(index) : null;
     }
 
     public void executeTest(TestCase testCase) {
         //TODO: Start test intent service
         notifyChanged();
-    }
-
-    public final List<TestCase> getTestSuite() {
-        List<TestCase> tests = null;
-        Object obj = mTestSuite.listTestCases.clone();
-        if (obj instanceof List<?>) {
-            tests = (List<TestCase>) obj;
-        }
-
-        return tests;
     }
 
     public BluetoothDevice getTargetDevice () {
@@ -73,10 +85,42 @@ public class TestManager extends DataSetObservable {
         mTargetDevice = device;
     }
 
+    public void setPreferedTestSuite(TestSuite suite) {
+        mPreferedSuite = suite;
+    }
+
+    // TODO - Implement it properly
+    public List<TestCase> getTestSuite() {
+        return null;
+    }
+
     public class TestSuite {
-        public final ArrayList<TestCase> listTestCases;
-        public TestSuite() {
-            listTestCases = new ArrayList<>(10);
+        private List<TestCase> mListTestCases;
+        private String mTestSuiteName;
+
+        public TestSuite(String name) {
+            mTestSuiteName = name;
+            mListTestCases = new ArrayList<>();
+        }
+
+        public String getName() {
+            return mTestSuiteName;
+        }
+
+        public boolean addTest(TestCase test) {
+            return mListTestCases.add(test);
+        }
+
+        public TestCase getTest(int index) {
+            return index >= 0 && index < mListTestCases.size() ? mListTestCases.get(index) : null;
+        }
+
+        public boolean removeTest(TestCase test) {
+            return mListTestCases.remove(test);
+        }
+
+        public final List<TestCase> getTests() {
+            return new ArrayList<>(mListTestCases);
         }
     }
 }

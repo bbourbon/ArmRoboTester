@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.org.cesar.armrobotester.R;
 import br.org.cesar.armrobotester.content.TestManager;
@@ -30,7 +31,7 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
         TestSuiteRecyclerViewAdapter.OnTestAdapterListener {
 
     private OnListFragmentInteractionListener mListener;
-    private ArrayList<TestCase> mListTestCases;
+    private List<TestManager.TestSuite> mListTestSuites;
     private Handler mHandler;
     private AlertDialog mTestListAlertDialog;
     private TestSuiteRecyclerViewAdapter mTestRecyclerViewAdapter;
@@ -41,7 +42,7 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
      * fragment (e.g. upon screen orientation changes).
      */
     public TestSuiteFragment() {
-        mListTestCases = new ArrayList<>();
+        mListTestSuites = new ArrayList<>();
         mHandler = new Handler();
 
     }
