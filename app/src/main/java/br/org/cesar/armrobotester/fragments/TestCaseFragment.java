@@ -53,6 +53,7 @@ public class TestCaseFragment extends Fragment {
     private OnTestCaseListener mOnTestCaseListener;
 
     private TestCase mTestCase;
+    private String mTestSuiteName;
 
     public TestCaseFragment() {
         // Required empty public constructor
@@ -61,6 +62,11 @@ public class TestCaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mTestSuiteName = getActivity().getIntent().getStringExtra(TestSuiteFragment.ARG_SUITE);
+        if (mTestSuiteName == null && savedInstanceState != null) {
+            mTestSuiteName = savedInstanceState.getString(TestSuiteFragment.ARG_SUITE);
+        }
     }
 
     @Override
@@ -129,11 +135,11 @@ public class TestCaseFragment extends Fragment {
         TestCase testCase = getTestCase();
         if (mTestCase != null && testCase != null) {
             TestManager.getInstance(getContext()).removeTest(mTestCase);
-            TestManager.getInstance(getContext()).addTest(testCase);
+            TestManager.getInstance(getContext()).addTest(mTestSuiteName, testCase);
             mTestCase = testCase;
 
         } else if (testCase != null) {
-            TestManager.getInstance(getContext()).addTest(testCase);
+            TestManager.getInstance(getContext()).addTest(mTestSuiteName, testCase);
             reset();
         }
     }
@@ -142,7 +148,7 @@ public class TestCaseFragment extends Fragment {
         if (testCase == null) return;
         mTestCase = testCase;
 
-        //TODO: Load mTestCase on views
+        //TODO: Load mTestSuite on views
         mButtonAdd.setText("Update");
     }
 

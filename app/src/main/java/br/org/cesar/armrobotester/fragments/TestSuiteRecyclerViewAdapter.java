@@ -28,7 +28,7 @@ public class TestSuiteRecyclerViewAdapter extends
     private final TestManager mTestManager;
     private final TestSuiteRecyclerViewAdapter.OnTestAdapterListener mListener;
     private final Context mContext;
-    private List<TestCase> mValues;
+    private List<TestManager.TestSuite> mValues;
 
     public TestSuiteRecyclerViewAdapter(@NonNull TestManager testManager, Context context,
                                         TestSuiteRecyclerViewAdapter.OnTestAdapterListener listener) {
@@ -47,22 +47,15 @@ public class TestSuiteRecyclerViewAdapter extends
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_test_item, parent, false);
+                .inflate(R.layout.fragment_test_suite_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mTestCase = mValues.get(position);
+        holder.mTestSuite = mValues.get(position);
 
-        String description = "Name: " + holder.mTestCase.getName();
-        description += ", ID: " + holder.mTestCase.getId();
-
-        String status = "Motion #: " + holder.mTestCase.getMotionTestList().size();
-        status += ", Status: " + holder.mTestCase.getStatus();
-
-        holder.mTestDescription.setText(description);
-        holder.mTestStatus.setText(status);
+        holder.mTestDescription.setText(holder.mTestSuite.getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +63,7 @@ public class TestSuiteRecyclerViewAdapter extends
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onClick(holder.mTestCase);
+                    mListener.onClick(holder.mTestSuite);
                 }
             }
         });
@@ -79,7 +72,7 @@ public class TestSuiteRecyclerViewAdapter extends
             @Override
             public boolean onLongClick(View v) {
                 if (null != mListener) {
-                    mListener.onLongClick(holder.mTestCase);
+                    mListener.onLongClick(holder.mTestSuite);
                     return true;
                 }
                 return false;
@@ -106,9 +99,9 @@ public class TestSuiteRecyclerViewAdapter extends
      * Listener for this recycle view adapter
      */
     public interface OnTestAdapterListener {
-        void onClick(TestCase testCase);
+        void onClick(TestManager.TestSuite testSuite);
 
-        void onLongClick(TestCase testCase);
+        void onLongClick(TestManager.TestSuite testSuite);
         void onListFragmentItemCountChanged(int count);
     }
 
@@ -119,7 +112,7 @@ public class TestSuiteRecyclerViewAdapter extends
         public final View mView;
         public final TextView mTestDescription;
         public final TextView mTestStatus;
-        public TestCase mTestCase;
+        public TestManager.TestSuite mTestSuite;
 
         public ViewHolder(View view) {
             super(view);

@@ -13,12 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.org.cesar.armrobotester.R;
 import br.org.cesar.armrobotester.content.TestManager;
-import br.org.cesar.armrobotester.model.TestCase;
 
 
 /**
@@ -30,10 +26,9 @@ import br.org.cesar.armrobotester.model.TestCase;
 public class TestSuiteFragment extends Fragment implements View.OnClickListener,
         TestSuiteRecyclerViewAdapter.OnTestAdapterListener {
 
+    public static final String ARG_SUITE = "key_suite";
+
     private OnListFragmentInteractionListener mListener;
-    private List<TestManager.TestSuite> mListTestSuites;
-    private Handler mHandler;
-    private AlertDialog mTestListAlertDialog;
     private TestSuiteRecyclerViewAdapter mTestRecyclerViewAdapter;
     private TestManager mTestManager;
 
@@ -41,15 +36,18 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public TestSuiteFragment() {
-        mListTestSuites = new ArrayList<>();
-        mHandler = new Handler();
-
-    }
+    public TestSuiteFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // TODO - Creating test suites
+        String countStr;
+        for (int i = 0; i < 7; i++) {
+            countStr = (i + 1) < 10 ? "00" + (i + 1) : "0" + (i + 1);
+            TestManager.getInstance(this.getContext()).createTestSuite("Suite_ID_"+countStr);
+        }
     }
 
     @Override
@@ -94,16 +92,16 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         if (v instanceof FloatingActionButton) {
-            onAddTest();
+            onAddSuite();
         }
     }
 
-    private void onAddTest() {
+    private void onAddSuite() {
         // TODO: Start Add Test Activity (or Fragment)
     }
 
     @Override
-    public void onLongClick(TestCase item) {
+    public void onLongClick(TestManager.TestSuite item) {
         DialogInterface.OnClickListener onClickListener = new RemoveTestDialogListener(item);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Alert!")
@@ -116,7 +114,7 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onClick(TestCase item) {
+    public void onClick(TestManager.TestSuite item) {
         // TODO: Open Test Case Fragment for edit
     }
 
@@ -145,10 +143,10 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
 
     private class RemoveTestDialogListener implements DialogInterface.OnClickListener {
 
-        private final TestCase mTestCase;
+        private final TestManager.TestSuite mTestSuite;
 
-        public RemoveTestDialogListener(TestCase item) {
-            mTestCase = item;
+        public RemoveTestDialogListener(TestManager.TestSuite item) {
+            mTestSuite = item;
         }
 
         @Override
@@ -156,7 +154,7 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
                     if (null != mTestManager)
-                        mTestManager.removeTest(mTestCase);
+                        mTestManager.removeSuite(mTestSuite);
                     dialog.dismiss();
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:

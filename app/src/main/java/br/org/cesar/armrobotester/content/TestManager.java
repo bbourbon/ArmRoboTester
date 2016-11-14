@@ -19,12 +19,10 @@ public class TestManager extends DataSetObservable {
     private List<TestSuite> mTestSuiteList;
     private BluetoothDevice mTargetDevice;
     private Context mContext;
-    private TestSuite mPreferedSuite;
 
     private TestManager(Context context) {
         mContext = context;
         mTestSuiteList = new ArrayList<>();
-        mPreferedSuite = null;
     }
 
     public static TestManager getInstance(Context context) {
@@ -36,17 +34,23 @@ public class TestManager extends DataSetObservable {
 
     public TestSuite createTestSuite(String name) {
         TestSuite suite = new TestSuite(name);
-        mPreferedSuite = suite;
         mTestSuiteList.add(suite);
         return suite;
     }
 
-    public void addTest(TestCase testCase) {
-        addTest(mPreferedSuite, testCase);
+    public void addTest(String suiteName, TestCase testCase) {
+        if (suiteName != null && suiteName.length() > 0) {
+            for (TestSuite suite : mTestSuiteList) {
+                if (suite.getName().equals(suiteName)) {
+                    addTest(suite, testCase);
+                }
+            }
+        }
     }
 
     public void addTest(TestSuite suite, TestCase testCase) {
-        if (suite != null && suite.addTest(testCase)) {
+        if (suite != null && !suite.containTest(testCase) &&
+                suite.addTest(testCase)) {
             notifyChanged();
         }
     }
@@ -68,6 +72,17 @@ public class TestManager extends DataSetObservable {
         }
     }
 
+    public TestSuite getSuiteByName(String suiteName) {
+        if (suiteName != null && suiteName.length() > 0) {
+            for (TestSuite suite : mTestSuiteList) {
+                if (suite.getName().equals(suiteName)) {
+                    return suite;
+                }
+            }
+        }
+        return null;
+    }
+
     public TestCase getTestCase(TestSuite suite, int index) {
         return suite != null ? suite.getTest(index) : null;
     }
@@ -85,13 +100,13 @@ public class TestManager extends DataSetObservable {
         mTargetDevice = device;
     }
 
-    public void setPreferedTestSuite(TestSuite suite) {
-        mPreferedSuite = suite;
+    // TODO - Implement it properly
+    public List<TestSuite> getTestSuite() {
+        return new ArrayList<>(mTestSuiteList);
     }
 
-    // TODO - Implement it properly
-    public List<TestCase> getTestSuite() {
-        return null;
+    public void removeSuite(TestSuite testSuite) {
+        mTestSuiteList.remove(testSuite);
     }
 
     public class TestSuite {
@@ -121,6 +136,10 @@ public class TestManager extends DataSetObservable {
 
         public final List<TestCase> getTests() {
             return new ArrayList<>(mListTestCases);
+        }
+
+        public boolean containTest(TestCase testCase) {
+            return mListTestCases.contains(testCase);
         }
     }
 }
