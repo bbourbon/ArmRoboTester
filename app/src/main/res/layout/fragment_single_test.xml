@@ -50,6 +50,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:maxLines="1"
             android:hint="@string/test_case_name_hint"
             android:text="Test Case 001" />
 
@@ -67,6 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="@string/test_case_id_hint"
+            android:maxLines="1"
             android:inputType="number"
             android:text="123" />
     </LinearLayout>
@@ -140,6 +142,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:maxLines="1"
                     android:inputType="number" />
 
             </LinearLayout>
@@ -224,6 +227,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:maxLines="1"
                     android:inputType="number" />
 
             </LinearLayout>
@@ -307,6 +311,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:maxLines="1"
                     android:inputType="number" />
 
             </LinearLayout>
