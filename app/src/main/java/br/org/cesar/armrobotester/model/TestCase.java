@@ -14,6 +14,7 @@ public class TestCase {
 
     public TestCase() {
         mStatus = "UNKNOWN";
+        mId = 1;
         mMotionList = new ArrayList<>();
     }
 

@@ -59,10 +59,14 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
         mTestManager.clearList();
         for (int i = 0; i < 7; i++) {
             countStr = (i + 1) < 10 ? "00" + (i + 1) : "0" + (i + 1);
-            TestManager.TestSuite suite = mTestManager.createTestSuite("Suite_ID_"+countStr);
+            TestManager.TestSuite suite = mTestManager.createTestSuite("Suite: ID_"+countStr);
             for (int j = 0; j < 3; j++) {
                 TestCase testCase = new TestCase();
                 testCase.setName("TestCase " + (j + 1));
+                List<Motion> motionList = new ArrayList<>();
+                motionList.add(new Motion());
+                motionList.add(new Motion());
+                testCase.setMotionList(motionList);
                 suite.addTest(testCase);
             }
         }

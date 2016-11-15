@@ -1,7 +1,6 @@
 package br.org.cesar.armrobotester.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 
 import br.org.cesar.armrobotester.R;
 import br.org.cesar.armrobotester.content.TestManager;
-import br.org.cesar.armrobotester.model.Motion;
 import br.org.cesar.armrobotester.model.TestCase;
 
 /**
@@ -85,24 +83,28 @@ public class TestSuiteEditorAdapter extends BaseExpandableListAdapter {
 
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.lblListHeader);
+        TextView lblListId = (TextView) convertView
+                .findViewById(R.id.test_id);
         lblListHeader.setText(headerTitle);
+        lblListId.setText("(id: 00" + ((TestCase) getGroup(groupPosition)).getId() + ")");
 
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        final String childText = getChild(groupPosition, childPosition).toString();
 
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.suite_test_attribute_item, parent, false);
         }
 
-        TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.lblListItem);
+        TextView action = (TextView) convertView.findViewById(R.id.add_action);
 
-        txtListChild.setText(childText);
+        switch (childPosition) {
+            case 0: action.setText("Add movement"); break;
+            case 1: action.setText("Add angle"); break;
+        }
 
         return convertView;
     }
