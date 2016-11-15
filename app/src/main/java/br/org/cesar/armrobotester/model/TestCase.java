@@ -1,5 +1,6 @@
 package br.org.cesar.armrobotester.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +14,7 @@ public class TestCase {
 
     public TestCase() {
         mStatus = "UNKNOWN";
+        mMotionList = new ArrayList<>();
     }
 
     public List<Motion> getMotionTestList() {

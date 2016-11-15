@@ -4,10 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import br.org.cesar.armrobotester.R;
 import br.org.cesar.armrobotester.adapters.TestSuiteEditorAdapter;
@@ -62,10 +64,12 @@ public class TestSuiteEditorFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_test_suite_editor, container, false);
 
         ExpandableListView expListView = (ExpandableListView) layout.findViewById(R.id.test_list);
+        TextView title = (TextView) layout.findViewById(R.id.suiteTitle);
 
-        TestSuiteEditorAdapter adapter = new TestSuiteEditorAdapter(getContext(),
-                                                                 TestManager.getInstance()
-                                                                         .getSuiteByName(mSuiteName));
+        TestManager.TestSuite suite = TestManager.getInstance().getSuiteByName(mSuiteName);
+        title.setText(suite.getName());
+
+        TestSuiteEditorAdapter adapter = new TestSuiteEditorAdapter(getContext(), suite);
         expListView.setAdapter(adapter);
 
         return layout;

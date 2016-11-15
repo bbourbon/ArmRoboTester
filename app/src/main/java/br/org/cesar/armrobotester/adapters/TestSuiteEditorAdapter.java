@@ -79,14 +79,12 @@ public class TestSuiteEditorAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String headerTitle = ((TestCase) getGroup(groupPosition)).getName();
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.suite_test_group_item, null);
+            convertView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.suite_test_group_item, parent, false);
         }
 
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.lblListHeader);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
 
         return convertView;
@@ -94,12 +92,11 @@ public class TestSuiteEditorAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        final String childText = ((Motion) getChild(groupPosition, childPosition)).toString();
+        final String childText = getChild(groupPosition, childPosition).toString();
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.suite_test_attribute_item, null);
+            convertView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.suite_test_attribute_item, parent, false);
         }
 
         TextView txtListChild = (TextView) convertView

@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import java.util.Set;
 
+import br.org.cesar.armrobotester.content.TestManager;
 import br.org.cesar.armrobotester.fragments.SettingsFragment;
 import br.org.cesar.armrobotester.fragments.StatusFragment;
 import br.org.cesar.armrobotester.fragments.TestCaseFragment;
@@ -48,6 +49,7 @@ public class MainNaviActivity extends AppCompatActivity
     private static final String TAG_STATUS_FRAG = "tag_status_fragment";
     private static final String TAG_RESULT_FRAG = "tag_result_fragment";
     private static final String TAG_SETTINGS_FRAG = "tag_settings_fragment";
+    private static final String TAG_LIST_TEST_FRAG = "tag_list_suites_fragment";
 
 
     FloatingActionButton mFabOptions;
@@ -205,10 +207,11 @@ public class MainNaviActivity extends AppCompatActivity
     }
 
     public void onListTestFromSuite() {
-        final TestSuiteEditorFragment testSuiteFragment = new TestSuiteEditorFragment();
+        final TestSuiteEditorFragment testSuiteFragment = TestSuiteEditorFragment.newInstance(
+                TestManager.getInstance().getTestSuite().get(0).getName());
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.relative_for_fragments, testSuiteFragment, TAG_TEST_FRAG).commit();
+                .replace(R.id.relative_for_fragments, testSuiteFragment, TAG_LIST_TEST_FRAG).commit();
     }
 
     private void onAddTests() {

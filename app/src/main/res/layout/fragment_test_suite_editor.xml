@@ -1,12 +1,24 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="br.org.cesar.armrobotester.fragments.TestSuiteEditorFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/suiteTitle"
+        android:layout_weight="0.1"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:textSize="@dimen/textSuiteTitle"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <ExpandableListView
         android:id="@+id/test_list"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="0.9"/>
 
-</FrameLayout>
+</LinearLayout>

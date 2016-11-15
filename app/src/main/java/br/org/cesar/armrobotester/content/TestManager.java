@@ -30,6 +30,12 @@ public class TestManager extends DataSetObservable {
         return sInstance;
     }
 
+    public void clearList() {
+        if (mTestSuiteList != null) {
+            mTestSuiteList.clear();
+        }
+    }
+
     public TestSuite createTestSuite(String name) {
         TestSuite suite = new TestSuite(name);
         mTestSuiteList.add(suite);

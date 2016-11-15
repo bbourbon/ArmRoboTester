@@ -17,9 +17,13 @@ import android.view.ViewGroup;
 
 import junit.framework.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.org.cesar.armrobotester.MainNaviActivity;
 import br.org.cesar.armrobotester.R;
 import br.org.cesar.armrobotester.content.TestManager;
+import br.org.cesar.armrobotester.model.Motion;
 import br.org.cesar.armrobotester.model.TestCase;
 
 
@@ -42,7 +46,9 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public TestSuiteFragment() {}
+    public TestSuiteFragment() {
+        mTestManager =  TestManager.getInstance();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,11 +56,13 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
 
         // TODO - Creating test suites
         String countStr;
+        mTestManager.clearList();
         for (int i = 0; i < 7; i++) {
             countStr = (i + 1) < 10 ? "00" + (i + 1) : "0" + (i + 1);
-            TestManager.TestSuite suite = TestManager.getInstance().createTestSuite("Suite_ID_"+countStr);
+            TestManager.TestSuite suite = mTestManager.createTestSuite("Suite_ID_"+countStr);
             for (int j = 0; j < 3; j++) {
                 TestCase testCase = new TestCase();
+                testCase.setName("TestCase " + (j + 1));
                 suite.addTest(testCase);
             }
         }
