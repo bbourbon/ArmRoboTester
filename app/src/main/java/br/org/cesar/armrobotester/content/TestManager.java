@@ -18,16 +18,14 @@ public class TestManager extends DataSetObservable {
     private static TestManager sInstance;
     private List<TestSuite> mTestSuiteList;
     private BluetoothDevice mTargetDevice;
-    private Context mContext;
 
-    private TestManager(Context context) {
-        mContext = context;
-        mTestSuiteList = new ArrayList<>();
+    private TestManager() {
+        mTestSuiteList = new ArrayList<>(7);
     }
 
-    public static TestManager getInstance(Context context) {
+    public static TestManager getInstance() {
         if (null == sInstance) {
-            sInstance = new TestManager(context);
+            sInstance = new TestManager();
         }
         return sInstance;
     }

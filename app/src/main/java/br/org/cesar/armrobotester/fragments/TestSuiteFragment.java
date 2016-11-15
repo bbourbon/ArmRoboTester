@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import junit.framework.Test;
+
+import br.org.cesar.armrobotester.MainNaviActivity;
 import br.org.cesar.armrobotester.R;
 import br.org.cesar.armrobotester.content.TestManager;
+import br.org.cesar.armrobotester.model.TestCase;
 
 
 /**
@@ -46,7 +52,11 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
         String countStr;
         for (int i = 0; i < 7; i++) {
             countStr = (i + 1) < 10 ? "00" + (i + 1) : "0" + (i + 1);
-            TestManager.getInstance(this.getContext()).createTestSuite("Suite_ID_"+countStr);
+            TestManager.TestSuite suite = TestManager.getInstance().createTestSuite("Suite_ID_"+countStr);
+            for (int j = 0; j < 3; j++) {
+                TestCase testCase = new TestCase();
+                suite.addTest(testCase);
+            }
         }
     }
 
@@ -55,7 +65,7 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tests_list, container, false);
 
-        mTestManager = TestManager.getInstance(getContext().getApplicationContext());
+        mTestManager = TestManager.getInstance();
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -105,7 +115,7 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
         DialogInterface.OnClickListener onClickListener = new RemoveTestDialogListener(item);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Alert!")
-                .setMessage("Do you want to remove the test case?")
+                .setMessage("Do you want to remove this test suite?")
                 .setCancelable(true)
                 .setNegativeButton("No", onClickListener)
                 .setPositiveButton("Yes", onClickListener);
@@ -116,6 +126,8 @@ public class TestSuiteFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onClick(TestManager.TestSuite item) {
         // TODO: Open Test Case Fragment for edit
+        ((MainNaviActivity)getActivity()).onListTestFromSuite();
+
     }
 
     @Override

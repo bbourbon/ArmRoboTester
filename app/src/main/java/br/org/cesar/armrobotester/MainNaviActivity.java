@@ -3,6 +3,7 @@ package br.org.cesar.armrobotester;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -29,18 +30,20 @@ import java.util.Set;
 import br.org.cesar.armrobotester.fragments.SettingsFragment;
 import br.org.cesar.armrobotester.fragments.StatusFragment;
 import br.org.cesar.armrobotester.fragments.TestCaseFragment;
+import br.org.cesar.armrobotester.fragments.TestSuiteEditorFragment;
 import br.org.cesar.armrobotester.fragments.TestSuiteFragment;
 
 public class MainNaviActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         TestSuiteFragment.OnListFragmentInteractionListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
-        FragmentManager.OnBackStackChangedListener {
+        FragmentManager.OnBackStackChangedListener,
+        TestSuiteEditorFragment.OnFragmentInteractionListener {
 
     public static final String TAG = "ARM_TESTER";
     private static final String ADD_TESTCASE_TAG = "add_testcase_tag";
 
-    private static final String TAG_TEST_FRAG = "tag_test_fragment";
+    public static final String TAG_TEST_FRAG = "tag_test_fragment";
     private static final String TAG_CALIBRATE_FRAG = "tag_calibrate_fragment";
     private static final String TAG_STATUS_FRAG = "tag_status_fragment";
     private static final String TAG_RESULT_FRAG = "tag_result_fragment";
@@ -162,7 +165,7 @@ public class MainNaviActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_tests) {
-            MainNaviActivity.this.onTests();
+            MainNaviActivity.this.onSuiteTests();
         } else if (id == R.id.nav_calibrate) {
             MainNaviActivity.this.onCalibrate();
         } else if (id == R.id.nav_status) {
@@ -184,7 +187,7 @@ public class MainNaviActivity extends AppCompatActivity
         return true;
     }
 
-    private void onTests() {
+    private void onSuiteTests() {
         final TestSuiteFragment testSuiteFragment = new TestSuiteFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -199,6 +202,13 @@ public class MainNaviActivity extends AppCompatActivity
             }
         });
         mFabOptions.setVisibility(FloatingActionButton.VISIBLE);
+    }
+
+    public void onListTestFromSuite() {
+        final TestSuiteEditorFragment testSuiteFragment = new TestSuiteEditorFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.relative_for_fragments, testSuiteFragment, TAG_TEST_FRAG).commit();
     }
 
     private void onAddTests() {
@@ -307,5 +317,10 @@ public class MainNaviActivity extends AppCompatActivity
         if (testFragment != null && testFragment.isVisible()) {
             mFabOptions.setVisibility(FloatingActionButton.VISIBLE);
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

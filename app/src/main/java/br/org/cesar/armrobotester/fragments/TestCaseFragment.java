@@ -134,12 +134,13 @@ public class TestCaseFragment extends Fragment {
     public void addTestCase() {
         TestCase testCase = getTestCase();
         if (mTestCase != null && testCase != null) {
-            TestManager.getInstance(getContext()).removeTest(mTestCase);
-            TestManager.getInstance(getContext()).addTest(mTestSuiteName, testCase);
+
+            TestManager.getInstance().removeTest(mTestCase);
+            TestManager.getInstance().addTest(mTestSuiteName, testCase);
             mTestCase = testCase;
 
         } else if (testCase != null) {
-            TestManager.getInstance(getContext()).addTest(mTestSuiteName, testCase);
+            TestManager.getInstance().addTest(mTestSuiteName, testCase);
             reset();
         }
     }
@@ -235,7 +236,7 @@ public class TestCaseFragment extends Fragment {
     public void remove() {
         if (mTestCase != null) {
             //TODO: Add Alert Dialog
-            TestManager.getInstance(getContext()).removeTest(mTestCase);
+            TestManager.getInstance().removeTest(mTestCase);
             mTestCase = null;
             reset();
         }

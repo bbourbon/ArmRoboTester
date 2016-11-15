@@ -29,4 +29,7 @@
     <string name="label_shoulder">Shoulder</string>
     <string name="label_elbow">Elbow</string>
     <string name="label_wrist">Wrist</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
