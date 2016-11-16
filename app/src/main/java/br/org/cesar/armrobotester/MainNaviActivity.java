@@ -28,6 +28,7 @@ import android.widget.Toast;
 import java.util.Set;
 
 import br.org.cesar.armrobotester.content.TestManager;
+import br.org.cesar.armrobotester.fragments.ResultFragment;
 import br.org.cesar.armrobotester.fragments.SettingsFragment;
 import br.org.cesar.armrobotester.fragments.StatusFragment;
 import br.org.cesar.armrobotester.fragments.TestCaseFragment;
@@ -42,9 +43,8 @@ public class MainNaviActivity extends AppCompatActivity
         TestSuiteEditorFragment.OnFragmentInteractionListener {
 
     public static final String TAG = "ARM_TESTER";
-    private static final String ADD_TESTCASE_TAG = "add_testcase_tag";
-
     public static final String TAG_TEST_FRAG = "tag_test_fragment";
+    private static final String ADD_TESTCASE_TAG = "add_testcase_tag";
     private static final String TAG_CALIBRATE_FRAG = "tag_calibrate_fragment";
     private static final String TAG_STATUS_FRAG = "tag_status_fragment";
     private static final String TAG_RESULT_FRAG = "tag_result_fragment";
@@ -243,7 +243,16 @@ public class MainNaviActivity extends AppCompatActivity
     }
 
     private void onLastResult() {
-        Toast.makeText(this, "Last Result", Toast.LENGTH_SHORT).show();
+
+        final ResultFragment resultFragment = new ResultFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.relative_for_fragments, resultFragment, TAG_RESULT_FRAG).commit();
+
+        // TODO: Button to change from single to full mode report
+        mFabOptions.setImageResource(R.drawable.ic_float_refresh);
+        mFabOptions.setOnClickListener(resultFragment);
+        mFabOptions.setVisibility(FloatingActionButton.GONE);
     }
 
     private void onSettings() {
