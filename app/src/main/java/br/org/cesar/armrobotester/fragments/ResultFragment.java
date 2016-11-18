@@ -146,10 +146,46 @@ public class ResultFragment extends Fragment implements View.OnClickListener {
         String deviceModel;
         String armAngle;
         String deviceAngle;
+
+        ArrayList<String> results;
+
         public MyTestCaseResult (String name) {
             this.name = name;
             this.deviceModel = "Moto G2";
+            this.armAngle = "45";
+            this.deviceAngle = "45";
+
+            results = new ArrayList<>(7);
         }
+
+        public ArrayList<String> getSimpleResult() {
+            results.clear();
+
+            results.add("Arm: " + this.armAngle + "˚");
+            results.add(deviceModel +": " + this.deviceAngle + "˚");
+
+            return this.results;
+        }
+
+        public ArrayList<String> getFullResult() {
+            results.clear();
+
+            // ARM and motors results;
+            results.add("Robotic Arm");
+            //id, speed, temperature, torque, pos
+            //results.add("ID: 0000 RPM / 000 ˚C / 0000 Nm / 000˚");
+            results.add("M1: 0000 RPM / 050 ˚C / 010 Nm / 000˚");
+            results.add("M2: 0000 RPM / 040 ˚C / 003 Nm / 000˚");
+            results.add("M3: 0000 RPM / 050 ˚C / 007 Nm / 000˚");
+            results.add("M4: 0000 RPM / 070 ˚C / 003 Nm / 045˚");
+
+            // Device results
+            results.add(deviceModel);
+            results.add("X: 000˚ / Y: 000˚ / Z: 045˚");
+
+            return this.results;
+        }
+
     }
 
 
@@ -235,25 +271,11 @@ public class ResultFragment extends Fragment implements View.OnClickListener {
 
             MyTestCaseResult tcr = (MyTestCaseResult) getChild(groupPosition, childPosition);
 
-//            final String childText = tcr.name;
-//
-//            if (convertView == null) {
-//                LayoutInflater layoutInflater = (LayoutInflater) this.mContext
-//                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                convertView = layoutInflater.inflate(R.layout.list_item, null);
-//            }
-//
-//            TextView txtListChild = (TextView) convertView
-//                    .findViewById(R.id.lblListItem);
-//
-//            txtListChild.setText(childText);
-//            return convertView;
-
             // Second Level ExpandableListView
-            CustExpListView custExpListView = new CustExpListView(mContext);
-            custExpListView.setAdapter(new CaseExpListAdapter(mContext, tcr));
-            custExpListView.setGroupIndicator(null);
-            return custExpListView;
+            TestResultExpListView testResultExpListView = new TestResultExpListView(mContext);
+            testResultExpListView.setAdapter(new CaseExpListAdapter(mContext, tcr));
+            testResultExpListView.setGroupIndicator(null);
+            return testResultExpListView;
         }
 
         @Override
@@ -269,13 +291,19 @@ public class ResultFragment extends Fragment implements View.OnClickListener {
 
     public class CaseExpListAdapter extends BaseExpandableListAdapter {
 
-        boolean isSimpleMode = true;
+        boolean isSimpleMode = false;
         MyTestCaseResult myTestCaseResult;
+        ArrayList<String> testResults;
         Context mContext;
 
         public CaseExpListAdapter (Context context, MyTestCaseResult testCaseResult) {
             mContext = context;
             myTestCaseResult = testCaseResult;
+            if (isSimpleMode) {
+                testResults = myTestCaseResult.getSimpleResult();
+            } else {
+                testResults = myTestCaseResult.getFullResult();
+            }
         }
 
         @Override
@@ -317,14 +345,13 @@ public class ResultFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public int getChildrenCount(int groupPosition) {
-            return 1;
+            return testResults.size();
         }
 
         @Override
         public Object getChild(int groupPosition, int childPosition) {
-            return myTestCaseResult;
+            return testResults.get(childPosition);
         }
-
 
         @Override
         public long getChildId(int groupPosition, int childPosition) {
@@ -335,25 +362,17 @@ public class ResultFragment extends Fragment implements View.OnClickListener {
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
                                  View convertView, ViewGroup parent) {
 
-            MyTestCaseResult tcr = myTestCaseResult;
-
-            String childText = "Robotic Arm";
-            childText += "\n Torque / Temp / Pos ";
-            childText += "\n 5 / 27 ˚C / 45˚ ";
-            childText += "\n" + tcr.deviceModel;
-            childText += "\n X  /  Y /  Z ";
-            childText += "\n 45˚ / 0˚ / 90˚ ";
-
             if (convertView == null) {
                 LayoutInflater layoutInflater = (LayoutInflater) this.mContext
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = layoutInflater.inflate(R.layout.list_item, null);
+                convertView = layoutInflater.inflate(R.layout.full_test_result_item, null);
             }
 
             TextView txtListChild = (TextView) convertView
-                    .findViewById(R.id.lblListItem);
+                    .findViewById(R.id.text_result_line);
 
-            txtListChild.setText(childText);
+            txtListChild.setText(testResults.get(childPosition));
+
             return convertView;
         }
 
@@ -368,9 +387,9 @@ public class ResultFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public class CustExpListView extends ExpandableListView {
+    public class TestResultExpListView extends ExpandableListView {
 
-        public CustExpListView(Context context) {
+        public TestResultExpListView(Context context) {
             super(context);
         }
 
@@ -378,7 +397,7 @@ public class ResultFragment extends Fragment implements View.OnClickListener {
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             widthMeasureSpec = MeasureSpec.makeMeasureSpec(960,
                     MeasureSpec.AT_MOST);
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(600,
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(960,
                     MeasureSpec.AT_MOST);
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
