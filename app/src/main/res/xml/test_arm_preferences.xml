@@ -22,4 +22,9 @@
         android:key="auto_refresh_status"
         android:summary="Refresh status every 5 seconds"
         android:title="Auto Refresh Status" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="report_simple_mode"
+        android:summary="Enable simplified report"
+        android:title="Report Simple Mode" />
 </PreferenceScreen>

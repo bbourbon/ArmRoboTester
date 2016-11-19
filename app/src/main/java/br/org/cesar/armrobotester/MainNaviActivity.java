@@ -28,6 +28,7 @@ import android.widget.Toast;
 import java.util.Set;
 
 import br.org.cesar.armrobotester.content.TestManager;
+import br.org.cesar.armrobotester.fragments.ExecutionFragment;
 import br.org.cesar.armrobotester.fragments.ResultFragment;
 import br.org.cesar.armrobotester.fragments.SettingsFragment;
 import br.org.cesar.armrobotester.fragments.StatusFragment;
@@ -50,6 +51,7 @@ public class MainNaviActivity extends AppCompatActivity
     private static final String TAG_RESULT_FRAG = "tag_result_fragment";
     private static final String TAG_SETTINGS_FRAG = "tag_settings_fragment";
     private static final String TAG_LIST_TEST_FRAG = "tag_list_suites_fragment";
+    private static final String TAG_EXECUTE_FRAG = "tag_execute_fragment";
 
 
     FloatingActionButton mFabOptions;
@@ -160,7 +162,6 @@ public class MainNaviActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
@@ -189,21 +190,51 @@ public class MainNaviActivity extends AppCompatActivity
         return true;
     }
 
+
+    // Load Fragments
+
     private void onSuiteTests() {
         final TestSuiteFragment testSuiteFragment = new TestSuiteFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.relative_for_fragments, testSuiteFragment, TAG_TEST_FRAG).commit();
 
-        mFabOptions.setImageResource(R.drawable.ic_float_plus);
+        mFabOptions.setImageResource(R.drawable.ic_float_play);
         //mFabOptions.setOnClickListener(testSuiteFragment);
+//        mFabOptions.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onAddTests();
+//            }
+//        });
         mFabOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onAddTests();
+                onExecuteTests();
             }
         });
         mFabOptions.setVisibility(FloatingActionButton.VISIBLE);
+    }
+
+    private void onExecuteTests() {
+        final ExecutionFragment executionFragment = new ExecutionFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.relative_for_fragments, executionFragment, TAG_EXECUTE_FRAG).commit();
+
+        mFabOptions.setImageResource(R.drawable.ic_float_stop);
+        mFabOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onStopExecuteTests();
+            }
+        });
+        mFabOptions.setVisibility(FloatingActionButton.VISIBLE);
+
+    }
+
+    private void onStopExecuteTests() {
+
     }
 
     public void onListTestFromSuite() {
@@ -214,6 +245,7 @@ public class MainNaviActivity extends AppCompatActivity
                 .replace(R.id.relative_for_fragments, testSuiteFragment, TAG_LIST_TEST_FRAG).commit();
     }
 
+    @SuppressWarnings("unused")
     private void onAddTests() {
         mFabOptions.setVisibility(FloatingActionButton.GONE);
 
@@ -302,6 +334,9 @@ public class MainNaviActivity extends AppCompatActivity
 
         Log.d(TAG, "Dev: " + deviceName + ", MAC: " + deviceMacAddress);
     }
+
+
+    // Fragments Interactions
 
     @Override
     public void onListFragmentItemCountChanged(int count) {

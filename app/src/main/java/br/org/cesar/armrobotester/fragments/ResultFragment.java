@@ -1,10 +1,12 @@
 package br.org.cesar.armrobotester.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,13 +46,21 @@ public class ResultFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
         lv = (ExpandableListView) view.findViewById(R.id.expListView);
-        lv.setAdapter(new SuiteExpListAdapter(getContext(), getMockUpResult()));
+        SuiteExpListAdapter adapter = new SuiteExpListAdapter(getContext(), getMockUpResult());
+        adapter.setSimpleMode(getResultMode());
+        lv.setAdapter(adapter);
         lv.setGroupIndicator(null);
     }
 
     @Override
     public void onClick(View view) {
         //TODO: Toggle between simple to full report mode;
+    }
+
+    private boolean getResultMode() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        boolean isSimpleModeReport = sp.getBoolean("report_simple_mode", false);
+        return isSimpleModeReport;
     }
 
 
@@ -186,13 +196,14 @@ public class ResultFragment extends Fragment implements View.OnClickListener {
             return this.results;
         }
 
-    }
 
+    }
 
     public class SuiteExpListAdapter extends BaseExpandableListAdapter {
 
         Context mContext;
         ArrayList<MyTestSuiteResult> mTestSuiteResults;
+        private boolean isSimpleMode;
 
         public SuiteExpListAdapter (Context context, ArrayList<MyTestSuiteResult> results) {
             mContext = context;
@@ -273,7 +284,9 @@ public class ResultFragment extends Fragment implements View.OnClickListener {
 
             // Second Level ExpandableListView
             TestResultExpListView testResultExpListView = new TestResultExpListView(mContext);
-            testResultExpListView.setAdapter(new CaseExpListAdapter(mContext, tcr));
+            CaseExpListAdapter caseExpListAdapter = new CaseExpListAdapter(
+                    mContext, tcr, isSimpleMode);
+            testResultExpListView.setAdapter(caseExpListAdapter);
             testResultExpListView.setGroupIndicator(null);
             return testResultExpListView;
         }
@@ -287,19 +300,23 @@ public class ResultFragment extends Fragment implements View.OnClickListener {
         public boolean isChildSelectable(int groupPosition, int childPosition) {
             return true;
         }
+
+        public void setSimpleMode(boolean simpleMode) {
+            this.isSimpleMode = simpleMode;
+        }
     }
 
     public class CaseExpListAdapter extends BaseExpandableListAdapter {
 
-        boolean isSimpleMode = false;
         MyTestCaseResult myTestCaseResult;
         ArrayList<String> testResults;
         Context mContext;
 
-        public CaseExpListAdapter (Context context, MyTestCaseResult testCaseResult) {
+        public CaseExpListAdapter (Context context, MyTestCaseResult testCaseResult,
+                                   boolean simpleMode) {
             mContext = context;
             myTestCaseResult = testCaseResult;
-            if (isSimpleMode) {
+            if (simpleMode) {
                 testResults = myTestCaseResult.getSimpleResult();
             } else {
                 testResults = myTestCaseResult.getFullResult();
@@ -395,6 +412,7 @@ public class ResultFragment extends Fragment implements View.OnClickListener {
 
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            //TODO: Understand the choice of height and width size
             widthMeasureSpec = MeasureSpec.makeMeasureSpec(960,
                     MeasureSpec.AT_MOST);
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(960,
