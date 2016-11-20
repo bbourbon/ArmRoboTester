@@ -3,11 +3,14 @@ package br.org.cesar.armrobotester.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -23,7 +26,7 @@ import br.org.cesar.armrobotester.content.TestManager;
  * Use the {@link TestSuiteEditorFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TestSuiteEditorFragment extends Fragment {
+public class TestSuiteEditorFragment extends Fragment implements ExpandableListView.OnItemClickListener {
 
     // TODO: Rename and change types of parameters
     private String mSuiteName;
@@ -66,6 +69,8 @@ public class TestSuiteEditorFragment extends Fragment {
         ExpandableListView expListView = (ExpandableListView) layout.findViewById(R.id.test_list);
         TextView title = (TextView) layout.findViewById(R.id.suiteTitle);
 
+        expListView.setOnItemClickListener(this);
+
         TestManager.TestSuite suite = TestManager.getInstance().getSuiteByName(mSuiteName);
         title.setText(suite.getName());
 
@@ -97,6 +102,25 @@ public class TestSuiteEditorFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        Log.i("TAG", "CLICKING");
+
+        // Create and show the dialog.
+        DialogFragment newFragment = AttributeDialogFragment.newInstance();
+        newFragment.show(ft, "dialog");
     }
 
     /**

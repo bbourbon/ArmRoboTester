@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17dip"
+        android:gravity="center_vertical"
+        android:text="Add movement"
+        android:textColor="@android:color/black"
+        android:drawableLeft="@drawable/blue_dot"
+        android:drawableRight="@drawable/right_arrow"
+        android:padding="@dimen/blue_dot_padding"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17dip"
+        android:text="Shoulder"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/black"
+        android:drawableLeft="@android:drawable/presence_busy"
+        android:layout_marginLeft="2dp"
+        android:padding="5dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Elbow"
+        android:textSize="17dip"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/black"
+        android:drawableLeft="@android:drawable/presence_busy"
+        android:layout_marginLeft="2dp"
+        android:padding="5dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17dip"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/black"
+        android:drawableLeft="@android:drawable/ic_input_add"
+        android:text="Wrist"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17dip"
+        android:gravity="center_vertical"
+        android:text="Add angle"
+        android:textColor="@android:color/black"
+        android:drawableLeft="@drawable/blue_dot"
+        android:drawableRight="@drawable/right_arrow"
+        android:padding="@dimen/blue_dot_padding"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="45 degrees"
+            android:padding="5dp"
+            android:layout_weight="0.5"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="Save"
+            android:layout_weight="0.5"/>
+
+    </LinearLayout>
+
+</LinearLayout>
