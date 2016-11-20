@@ -200,13 +200,6 @@ public class MainNaviActivity extends AppCompatActivity
                 .replace(R.id.relative_for_fragments, testSuiteFragment, TAG_TEST_FRAG).commit();
 
         mFabOptions.setImageResource(R.drawable.ic_float_play);
-        //mFabOptions.setOnClickListener(testSuiteFragment);
-//        mFabOptions.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onAddTests();
-//            }
-//        });
         mFabOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -26,7 +25,8 @@ import br.org.cesar.armrobotester.content.TestManager;
  * Use the {@link TestSuiteEditorFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TestSuiteEditorFragment extends Fragment implements ExpandableListView.OnItemClickListener {
+public class TestSuiteEditorFragment extends Fragment implements
+        ExpandableListView.OnChildClickListener {
 
     // TODO: Rename and change types of parameters
     private String mSuiteName;
@@ -69,7 +69,7 @@ public class TestSuiteEditorFragment extends Fragment implements ExpandableListV
         ExpandableListView expListView = (ExpandableListView) layout.findViewById(R.id.test_list);
         TextView title = (TextView) layout.findViewById(R.id.suiteTitle);
 
-        expListView.setOnItemClickListener(this);
+        expListView.setOnChildClickListener(this);
 
         TestManager.TestSuite suite = TestManager.getInstance().getSuiteByName(mSuiteName);
         title.setText(suite.getName());
@@ -105,7 +105,8 @@ public class TestSuiteEditorFragment extends Fragment implements ExpandableListV
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
+                                int childPosition, long id) {
 
         // DialogFragment.show() will take care of adding the fragment
         // in a transaction.  We also want to remove any currently showing
@@ -121,6 +122,9 @@ public class TestSuiteEditorFragment extends Fragment implements ExpandableListV
         // Create and show the dialog.
         DialogFragment newFragment = AttributeDialogFragment.newInstance();
         newFragment.show(ft, "dialog");
+
+
+        return true;
     }
 
     /**
